@@ -10,9 +10,21 @@ const gameSchema =  new mongoose.Schema({
         type : String,
         required:true
     },
-    category : {
+    genre : {
         type : String,
         required:true
+    },
+    releaseDate:{
+        type : Date,
+        required : true
+    },
+    description:{
+        type : String,
+        required : true
+    },
+    platform:{
+        type : String,
+        required : true
     },
     photo : {
         type : String,
