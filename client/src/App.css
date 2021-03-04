@@ -1,0 +1,109 @@
+a{
+  color: white !important;
+  /*text-shadow: 1px 1px 1px green;*/
+}
+body{
+  background: rgb(10,10,10);
+} 
+
+/* .nav-wrapper{
+  background: rgb(55,55,56);
+background: radial-gradient(circle, rgba(55,55,56,1) 0%, rgba(0,0,0,1) 100%);
+}  */
+
+.mycard{
+  margin-top: 30px;
+  
+}
+
+.brand-logo{
+  margin-left:1%;
+}
+
+.auth-card{
+  padding: 20px;
+  text-align: center;
+  max-width: 400px;
+  margin: 10px auto;
+}
+
+#toast-container{
+  top:60px !important;
+  right:20px !important;
+  left:auto !important;
+}
+
+.row{
+  transition: transform 450ms;
+}
+.row:hover{
+  transform: scale(1.08);
+}
+.card-image{
+  height: 290px;
+}
+.activator{
+  min-height:300px!important;
+}
+
+.card{
+  border:1px solid green;
+  min-height:390px;
+}
+.card-title{
+  font-size: 17px!important;
+  font-family: 'Roboto Condensed', sans-serif;
+}
+.rate{
+  font-size: 12px!important;
+}
+
+.games{
+  display:grid;
+  margin: 10px auto;
+  max-width: 1500px;
+  grid-template-columns: repeat(7, auto);
+  padding:20px;
+  width:100%;
+}
+.product__rating{
+	display:flex;
+  margin-left:10px;
+}
+
+
+@media only screen and (max-width : 1366px) {
+  .games{
+    display:grid;
+    grid-template-columns: repeat(4, auto);
+    max-width: 1500px;
+    margin: 0 auto;
+    margin: 10px;
+    padding:20px;
+    width:100%;
+  }
+}
+
+@media only screen and (max-width : 900px) {
+  .games{
+    display:grid;
+    grid-template-columns: repeat(3, auto);
+    max-width: 1500px;
+    margin: 0 auto;
+    margin: 10px;
+    padding:20px;
+    width:100%;
+  }
+}
+
+@media only screen and (max-width : 600px) {
+  .games{
+    display:grid;
+    grid-template-columns: repeat(2, auto);
+    max-width: 1500px;
+    margin: 0 auto;
+    margin: 10px;
+    padding:20px;
+    width:100%;
+  }
+}
