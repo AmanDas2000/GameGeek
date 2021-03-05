@@ -17,7 +17,7 @@ router.get("/allrating", (req, res) => {
       console.log(err);
     });
 });
-
+//adding without game id
 /* router.post('/rate',requireLogin,(req,res)=>{
     const {game,rating} = req.body 
     if(!game || !rating ){
@@ -37,15 +37,14 @@ router.get("/allrating", (req, res) => {
     })
 }) */
 
-//add rating using name
 router.post("/rate", requireLogin, async (req, res) => {
-  const { game, rating } = req.body;
-  if (!game || !rating) {
+  const { id, rating } = req.body;
+  if (!id || !rating) {
     return res.status(422).json({ error: "Plase add all the fields" });
   }
   req.user.password = undefined;
 
-  await Game.findOne({ name: game }, (error, data) => {
+  await Game.findOne({ _id: id }, (error, data) => {
     if (error) {
       console.log(error);
     } else {
@@ -54,19 +53,33 @@ router.post("/rate", requireLogin, async (req, res) => {
         res.json({ error: "Game not found in Database" });
       } else {
         console.log(data);
-        const rate = new Rate({
-          game: data,
-          rating,
-          postedBy: req.user,
-        });
-        rate
-          .save()
-          .then((result) => {
-            res.json({ rate: result });
-          })
-          .catch((err) => {
-            console.log(err);
+        var newrating = rating + data.totalRating;
+        var increasedRating = data.noOfRating + 1;
+        Game.findByIdAndUpdate(
+          { _id: id },
+          { totalRating: newrating, noOfRating: increasedRating },
+          { new: true },
+          (error, updatedGame) => {
+            if (error) console.log(Error);
+            else {
+              console.log("UPDATED GAME " + updatedGame);
+            }
+          }
+        ).then(() => {
+          const rate = new Rate({
+            game: data,
+            rating,
+            postedBy: req.user,
           });
+          rate
+            .save()
+            .then((result) => {
+              res.json({ rate: result });
+            })
+            .catch((err) => {
+              console.log(err);
+            });
+        });
       }
     }
   });
