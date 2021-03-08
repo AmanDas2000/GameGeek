@@ -26,7 +26,7 @@ function Card({ id, photo, name, oldrating,category,company,number }) {
                     M.toast({html: data.error, classes:"#e57373 red"})
                 }
                 else {
-                    M.toast({ html: "rated", classes: "#43a047 green darken-1" })
+                    M.toast({ html: data.message, classes: "#43a047 green darken-1" })
                     history.push('/')
                 }
             }).catch(err => {
