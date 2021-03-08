@@ -3,11 +3,11 @@ const {ObjectId} = mongoose.Schema.Types
 const postSchema = new mongoose.Schema({
     game:{
         type:ObjectId,
-       ref:"Game"
+        ref:"Game"
     },
     rating:{
         type:Number,
-        default:0
+        required:true
     },
     postedBy:{
        type:ObjectId,
