@@ -115,6 +115,7 @@ router.post("/signup", (req, res) => {
     });
 });
 
+
 //user Signin
 router.post("/signin", (req, res) => {
   const { email, password } = req.body;
@@ -123,7 +124,8 @@ router.post("/signin", (req, res) => {
   }
   User.findOne({ email: email }).then((savedUser) => {
     if (!savedUser) {
-      return res.status(422).json({ error: "Invalid Email or password" });
+      return res.status(422).json({ error: "Invalid Email or password" })
+
     }
     bcrypt
       .compare(password, savedUser.password)
@@ -142,6 +144,7 @@ router.post("/signin", (req, res) => {
       });
   });
 });
+
 
 //admin signin
 router.post("/adminSignin", (req, res) => {
