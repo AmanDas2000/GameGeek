@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { Link,useHistory } from 'react-router-dom'
 import M from 'materialize-css'
+import ParticlesBg from 'particles-bg'
 
 
 function Signup() {
@@ -43,22 +44,26 @@ function Signup() {
 
     return (
         <div className="mycard">
+            <ParticlesBg color="#1b4332" type="cobweb" bg={true} />
             <div className="card auth-card #212121 grey darken-4">
                 <h2 class="white-text">GameGeek.GG</h2>
                 <input
+                    class="white-text"
                     type='text'
                     placeholder='name'
                     value={name}
                     onChange={(e)=>setName(e.target.value)}
                 />
                 <input
+                    class="white-text"
                     type='text'
                     placeholder='email'
                     value={email}
                     onChange={(e)=>setEmail(e.target.value)}
                 />
                 <input
-                    type='text'
+                    class="white-text"
+                    type='password'
                     placeholder='password'
                     value={password}
                     onChange={(e)=>setPassword(e.target.value)}

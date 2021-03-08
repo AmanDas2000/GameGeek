@@ -2,12 +2,12 @@ const mongoose = require('mongoose')
 const {ObjectId} = mongoose.Schema.Types
 const postSchema = new mongoose.Schema({
     game:{
-        type:String,
-        required:true
+        type:ObjectId,
+       ref:"Game"
     },
     rating:{
-        type:String,
-        required:true
+        type:Number,
+        default:0
     },
     postedBy:{
        type:ObjectId,
