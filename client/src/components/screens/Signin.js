@@ -1,10 +1,13 @@
-import React, { useState } from 'react'
-import { Link,useHistory } from 'react-router-dom'
+import React, { useState, useContext } from 'react'
+import {UserContext} from '../../App'
+import { Link, useHistory } from 'react-router-dom'
+import ParticlesBg from 'particles-bg'
 import M from 'materialize-css'
 
 
 function Signin() {
-    const history=useHistory()
+    const {state,dispatch} = useContext(UserContext)
+    const history = useHistory()
     const [password,setPassword] = useState("")
     const [email, setEmail] = useState("")
     const PostData = () => {
@@ -29,8 +32,12 @@ function Signin() {
                         M.toast({html: data.error, classes:"#e57373 red"})
                     }
                     else {
-                        M.toast({ html: "Signed in successfully", classes: "#43a047 green darken-1" })
+                        localStorage.setItem("jwt",data.token)
+                        localStorage.setItem("user",JSON.stringify(data.user))
+                        dispatch({type:"USER",payload:data.user})
+                        M.toast({ html: "Sign in successful", classes: "#43a047 green darken-1" })
                         history.push('/')
+                        
                     }
                 }).catch(err => {
                     console.log(err)
@@ -40,16 +47,19 @@ function Signin() {
      
     return (
         <div className="mycard">
+            <ParticlesBg color="#1b4332" type="cobweb" bg={true} />
             <div className="card auth-card #212121 grey darken-4">
                 <h2 class="white-text">GameGeek.GG</h2>
                 <input
+                    class="white-text"
                     type='text'
                     placeholder='email'
                     value={email}
                     onChange={(e)=>setEmail(e.target.value)}
                 />
                 <input
-                    type='text'
+                    class="white-text"
+                    type='password'
                     placeholder='password'
                     value={password}
                     onChange={(e)=>setPassword(e.target.value)}

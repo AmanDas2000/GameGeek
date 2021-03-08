@@ -12,7 +12,7 @@ mongoose.connect(MONGOURI,{
 
 })
 mongoose.connection.on('connected',()=>{
-    console.log("conneted to mongo yeahh")
+    console.log("conneted to mongo successfully")
 })
 mongoose.connection.on('error',(err)=>{
     console.log("err connecting",err)
@@ -21,11 +21,15 @@ mongoose.connection.on('error',(err)=>{
 require('./models/user')
 require('./models/rate')
 require('./models/game')
+require('./models/award')
+require('./models/admin')
 
 app.use(express.json())
 app.use(require('./routes/auth'))
 app.use(require('./routes/rate'))
 app.use(require('./routes/game'))
+app.use(require('./routes/award'))
+
 
 app.listen(PORT, () => {
     console.log("server is running on ",PORT)
