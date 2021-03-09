@@ -38,7 +38,6 @@ router.post("/rate", requireLogin, async (req, res) => {
   } = req.body;
   if (!id || !rating) {
     return res.status(422).json({
-
       error: "Please add all the fields"
     });
   }
@@ -72,7 +71,6 @@ router.post("/rate", requireLogin, async (req, res) => {
             } else {
               if (data == null) {
                 console.log("No existing rating found by this user.");
-
                 //add new rating (FINAL)
 
                 var newRating = game_data.totalRating + rating;
@@ -102,7 +100,6 @@ router.post("/rate", requireLogin, async (req, res) => {
                     .save()
                     .then((result) => {
                       res.json({
-
                         message: "New rating added",
                         rate: result
 
@@ -138,7 +135,6 @@ router.post("/rate", requireLogin, async (req, res) => {
                     newTotalRating
                   });
                   Game.findByIdAndUpdate({
-
                       _id: game_data._id
                     }, {
                       totalRating: newTotalRating
@@ -156,7 +152,6 @@ router.post("/rate", requireLogin, async (req, res) => {
                     message: "Updated rating",
                     rate: rate_result
                   });
-
                 });
               }
             }
@@ -199,9 +194,7 @@ router.get("/userrated", requireLogin, (req, res) => {
   Rate.find({
       postedBy: req.user._id
     })
-
     .populate("game", "_id name company photo noOfRating") //no idea what this does
-
     .populate("postedBy", "_id name photo")
     .then((userrated) => {
       res.json({
