@@ -12,7 +12,7 @@ router.post("/addAward", requireAdmin, (req, res) => {
     return res.json({ error: "Provide all the fields" });
   }
   Game.findOne({ _id: game_id }, (error, game_data) => {
-    if (game_id == null) {
+    if (game_data == null) {
       //checking if game exists
       return res.json({ error: "Game does not exist in database" });
     }
