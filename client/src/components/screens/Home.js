@@ -1,8 +1,11 @@
 import React,{ useState,useEffect  } from 'react'
 import Card from './Card.js'
 import ParticlesBg from 'particles-bg'
+import { Link, useHistory } from 'react-router-dom'
+import Modal from 'react-bootstrap/Modal'
 
 function Home() {
+    const [show, setShow] = useState(false);
     const [games, setGames] = useState([]);
     
     useEffect(()=>{
@@ -27,9 +30,17 @@ function Home() {
     }
     
     
+    
     return (
-        <div className="games">
+        <div>
+            
+            
+  
+ 
+           <div className="games">
             {/* <ParticlesBg color="black" type="cobweb" bg={true} /> */}
+            
+            
             {games?.map(item => (
                 <div>
                     <Card id={item._id} photo={item.photo} name={item.name} oldrating={rate(item.totalRating, item.noOfRating)} category={item.category} company={item.company} number={item.noOfRating} />
@@ -37,6 +48,8 @@ function Home() {
                 </div>
                 ))}
          </div>
+        </div>
+        
         
 
     )
