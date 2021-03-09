@@ -9,18 +9,7 @@ const Rate = mongoose.model("Rate");
 const User = mongoose.model("User");
 const Game = mongoose.model("Game");
 
-router.get("/allrating", (req, res) => {
-  Rate.find()
-    .populate("postedBy", "_id name")
-    .then((posts) => {
-      res.json({
-        posts
-      });
-    })
-    .catch((err) => {
-      console.log(err);
-    });
-});
+
 //adding without game id
 /* router.post('/rate',requireLogin,(req,res)=>{
     const {game,rating} = req.body 
@@ -44,7 +33,8 @@ router.get("/allrating", (req, res) => {
 router.post("/rate", requireLogin, async (req, res) => {
   const {
     id,
-    rating
+    rating,
+    review
   } = req.body;
   if (!id || !rating) {
     return res.status(422).json({
@@ -105,6 +95,7 @@ router.post("/rate", requireLogin, async (req, res) => {
                   const rate = new Rate({
                     game: game_data._id,
                     rating,
+                    review,
                     postedBy: req.user._id,
                   });
                   rate
@@ -130,7 +121,8 @@ router.post("/rate", requireLogin, async (req, res) => {
                 Rate.findByIdAndUpdate({
                   _id: data._id
                 }, {
-                  rating
+                  rating,
+                  review
                 }, {
                   new: true
                 }, (error, rating_data) => {
@@ -174,7 +166,35 @@ router.post("/rate", requireLogin, async (req, res) => {
     }
   });
 });
+//all ratings
+router.get("/allrating", (req, res) => {
+  Rate.find()
+    .populate("postedBy", "_id name")
+    .then((posts) => {
+      res.json({
+        posts
+      });
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+});
 
+router.get("/allreviews", (req, res) => {
+  const {game_id} =req.body
+  Rate.find({$and : [{game:{_id : game_id}},{review : {$exists : true}}]})
+    .populate("postedBy", "_id name")
+    .then((posts) => {
+      res.json({
+        posts
+      });
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+});
+
+//all rated games by a user
 router.get("/userrated", requireLogin, (req, res) => {
   Rate.find({
       postedBy: req.user._id
