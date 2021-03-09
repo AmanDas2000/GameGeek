@@ -6,6 +6,7 @@ import Home from './components/screens/Home'
 import Signin from './components/screens/Signin'
 import Signup from './components/screens/Signup'
 import MyList from './components/screens/MyList'
+import Review from './components/screens/Review'
 import {reducer,initialState} from './reducers/userReducer'
 export const UserContext = createContext()
 
@@ -34,6 +35,9 @@ const Routing = ()=>{
       </Route>
       <Route path="/myList">
         <MyList />
+      </Route>
+      <Route path="/review">
+        <Review />
       </Route>
       
     </Switch>

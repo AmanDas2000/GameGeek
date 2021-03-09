@@ -67,6 +67,9 @@ background: radial-gradient(circle, rgba(55,55,56,1) 0%, rgba(0,0,0,1) 100%);
 .rate{
   font-size: 12px!important;
 }
+.review-text{
+  height: 100px;
+}
 
 .games{
   display:grid;
