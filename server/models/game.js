@@ -6,14 +6,14 @@ const gameSchema =  new mongoose.Schema({
         type : String,
         required:true
     },
-    company :[{
+    company :{
         type : String,
         required:true
-    }],
-    genre : [{
+    },
+    genre : {
         type : String,
         required:true
-    }],
+    },
     releaseDate:{
         type : Date,
         required : true
@@ -22,17 +22,17 @@ const gameSchema =  new mongoose.Schema({
         type : String,
         required : true
     },
-    platform:[{
+    platform:{
         type : String,
         required : true
-    }],
-    coverPhoto : {
+    },
+    photo : {
         type : String,
         required : true
     },
     addedBy : {
         type:ObjectId,
-        ref:"Admin"
+        ref:"User"
     },
     totalRating : {
         type : Number,
@@ -43,5 +43,4 @@ const gameSchema =  new mongoose.Schema({
         default : 0
     }
 })
-
 mongoose.model("Game",gameSchema)
