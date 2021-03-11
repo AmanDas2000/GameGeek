@@ -43,15 +43,7 @@ function Home() {
             
             {games?.map(item => (
                 <div>
-                    <Card id={item._id}
-                        photo={item.coverPhoto}
-                        name={item.name}
-                        oldrating={rate(item.totalRating, item.noOfRating)}
-                        genre={item.genre} company={item.company}
-                        number={item.noOfRating} platform={item.platform}
-                        date={item.releaseDate}
-                        description={item.description}
-                    />
+                    <Card id={item._id} photo={item.photo} name={item.name} oldrating={rate(item.totalRating, item.noOfRating)} category={item.category} company={item.company} number={item.noOfRating} />
 
                 </div>
                 ))}

@@ -1,35 +1,22 @@
 const mongoose = require('mongoose')
 
 const userSchema = new mongoose.Schema({
-    IGN: {
-        type: String,
-        default: "n00b"
-    },
     name: {
-        firstName: {
-            type: String,
-            required: true
-        },
-        lastName: {
-            type: String
-        }
-    },
-    dateOfBirth: {
-        type: Date,
-        required: true
+        type: String,
+        required:true
     },
     email: {
         type: String,
-        required: true
+        required:true
     },
-    profilePhoto: {
+    photo: {
         type: String,
-        default: "no photo"
+        default:"no photo"
     },
     password: {
         type: String,
-        required: true
+        required:true
     }
 })
 
-mongoose.model("User", userSchema)
+mongoose.model("User",userSchema)

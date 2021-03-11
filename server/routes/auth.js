@@ -9,7 +9,40 @@ const { JWT_SECRET } = require("../keys");
 const requireLogin = require("../middleware/requireLogin");
 const requireAdmin = require("../middleware/requireAdmin");
 
-
+//user signup
+/* router.post("/signup", (req, res) => {
+  const { name, email, password } = req.body;
+  if (!email || !password || !name) {
+    return res.status(422).json({ error: "please add all the fields" });
+  }
+  User.findOne({ email: email })
+    .then((savedUser) => {
+      if (savedUser) {
+        return res
+          .status(422)
+          .json({ error: "user already exits with this email" });
+      }
+      bcrypt.hash(password, 12).then((hashedpassword) => {
+        const user = new User({
+          email,
+          password: hashedpassword,
+          name,
+        });
+        user
+          .save()
+          .then((user) => {
+            res.json({ message: "saved" });
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      });
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+});
+ */
 //admin signup
 router.post("/adminSignup", (req, res) => {
   const { name, email, password } = req.body;
@@ -43,24 +76,29 @@ router.post("/adminSignup", (req, res) => {
       console.log(err);
     });
 });
-//user signup
+
 router.post("/signup", (req, res) => {
-  const { firstName,lastName,dateOfBirth,photo, email, password } = req.body;
-  if (!email || !password || !firstName) {
+  const { name, email, password, photo } = req.body;
+  if (!email || !password || !name || !photo) {
     return res.status(422).json({ error: "please add all the fields" });
   }
-  User.findOne({ email: email })
-    .then((savedUser) => {
-      if (savedUser) {
-        return res
-          .status(422)
-          .json({ error: "User already exits with this email" });
+  bcrypt
+    .compare(password, savedUser.password)
+    .then((doMatch) => {
+      if (doMatch) {
+        //res.json({message:"successfully signed in"})
+        const token = jwt.sign({ _id: savedUser._id }, JWT_SECRET);
+        const { _id, name, email } = savedUser;
+        res.json({ token, user: { _id, name, email } });
+      } else {
+        return res.status(422).json({ error: "Invalid Email or password" });
       }
       bcrypt.hash(password, 12).then((hashedpassword) => {
         const user = new User({
-          email,dateOfBirth,photo,
+          email,
           password: hashedpassword,
-          name : {firstName,lastName}
+          name,
+          photo,
         });
         user
           .save()
@@ -86,7 +124,8 @@ router.post("/signin", (req, res) => {
   }
   User.findOne({ email: email }).then((savedUser) => {
     if (!savedUser) {
-      return res.status(422).json({ error: "Invalid Email or password" });
+      return res.status(422).json({ error: "Invalid Email or password" })
+
     }
     bcrypt
       .compare(password, savedUser.password)
@@ -94,13 +133,8 @@ router.post("/signin", (req, res) => {
         if (doMatch) {
           //res.json({message:"successfully signed in"})
           const token = jwt.sign({ _id: savedUser._id }, JWT_SECRET);
-         const email = savedUser.email
-         const _id = savedUser._id
-         const firstName = savedUser.name.firstName
-         const lastName = savedUser.name.lastName
-         const  dateOfBirth = savedUser.dateOfBirth
-         
-          res.json({ token, user: { _id, email,firstName,lastName,dateOfBirth } });
+          const { _id, name, email } = savedUser;
+          res.json({ token, admin: { _id, name, email } });
         } else {
           return res.status(422).json({ error: "Invalid Email or password" });
         }
@@ -111,9 +145,10 @@ router.post("/signin", (req, res) => {
   });
 });
 
+
 //admin signin
 router.post("/adminSignin", (req, res) => {
-  const { email, password, } = req.body;
+  const { email, password } = req.body;
   if (!email || !password) {
     return res.status(422).json({ error: "please add email or password" });
   }

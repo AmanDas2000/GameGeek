@@ -1,14 +1,12 @@
 import React, { useState } from 'react'
 import { Link,useHistory } from 'react-router-dom'
-import M, { Datepicker } from 'materialize-css'
+import M from 'materialize-css'
 import ParticlesBg from 'particles-bg'
 
 
 function Signup() {
     const history=useHistory()
-    const [firstName,setFirstName] = useState("")
-    const [lastName,setLastName] = useState("")
-    const [dateOfBirth,setDateOfBirth] = useState("")
+    const [name,setName] = useState("")
     const [password,setPassword] = useState("")
     const [email, setEmail] = useState("")
     const PostData = () => {
@@ -26,11 +24,9 @@ function Signup() {
                 "Content-Type": "application/json"
             },
             body: JSON.stringify({
-               firstName,
-               lastName,
-               email,
-               password,
-               dateOfBirth
+                name,
+                password,
+                email
             })
         }).then(res => res.json())
                 .then(data => {
@@ -51,44 +47,24 @@ function Signup() {
             <ParticlesBg color="#1b4332" type="cobweb" bg={true} />
             <div className="card auth-card #212121 grey darken-4">
                 <h2 class="white-text">GameGeek.GG</h2>
-                <div style={{display : "flex"}}>
-                <input 
+                <input
                     class="white-text"
                     type='text'
-                    placeholder='First Name'
-                    value={firstName}
-                    onChange={(e)=>setFirstName(e.target.value)}
+                    placeholder='name'
+                    value={name}
+                    onChange={(e)=>setName(e.target.value)}
                 />
                 <input
                     class="white-text"
                     type='text'
-                    placeholder='Last Name'
-                    value={lastName}
-                    onChange={(e)=>setLastName(e.target.value)}
-                />
-                </div>
-                <div style={{display : "flex"}}>
-                <p class = "white-text" style={{width:"30%"}} >Date Of Birth</p>
-                <input
-                    style={{width:"70%"}}
-                    class = "white-text"
-                    type ="date"
-                    placeholder = "Date of Birth"
-                    value={dateOfBirth}
-                    onChange={(e)=>setDateOfBirth(e.target.value)}
-                />
-                </div>
-                <input
-                    class="white-text"
-                    type='text'
-                    placeholder='Email'
+                    placeholder='email'
                     value={email}
                     onChange={(e)=>setEmail(e.target.value)}
                 />
                 <input
                     class="white-text"
                     type='password'
-                    placeholder='Password'
+                    placeholder='password'
                     value={password}
                     onChange={(e)=>setPassword(e.target.value)}
                 />
