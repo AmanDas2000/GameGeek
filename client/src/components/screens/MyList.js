@@ -3,6 +3,7 @@ import Card from './Card.js'
 import ParticlesBg from 'particles-bg'
 import {UserContext} from '../../App'
 import {Link,useHistory} from 'react-router-dom'
+import SimpleTabs from './ListTab.js'
 
 function MyList() {
     const [games, setGames] = useState([]);
@@ -47,12 +48,12 @@ function MyList() {
             }}>
                 <div>
                     <img class="dp"
-                        style={{ width: "160px", height: "160px", borderRadius: "80px" }} 
-                        src={games[0]?.postedBy.photo}
+                        style={{ width: "160px", height: "160px", borderRadius: "80px" }}
+                        src={state?.photo}
                         />
                 </div>
                 <div class="white-text">
-                    <h4>{ state.name}</h4> 
+                    <h4>{ state?.firstName} { state?.lastName}</h4>
                     
                     <div style={{
                         display: "flex",
@@ -67,19 +68,28 @@ function MyList() {
             <div class="white-text" style={{
                 display: "flex",
                 justifyContent: "space-around",
-                margin: "5px auto",
-                borderBottom: "1px solid grey"
+                margin: "5px auto"
             }}>
-            <h2>User rated</h2>
+            <SimpleTabs/>
             </div>
             
             <div className="games">
             {/* <ParticlesBg color="black" type="cobweb" bg={true} /> */}
             {games?.map(item => (
                 <div>
-                    <Card id={item._id} photo={item.game.photo} name={item.game.name} oldrating={item.rating} number={ item.game.noOfRating}/>
+                    <Card id={item._id}
+                        photo={item.coverPhoto}
+                        name={item.name}
+                        oldrating={rate(item.totalRating, item.noOfRating)}
+                        genre={item.genre} company={item.company}
+                        number={item.noOfRating} platform={item.platform}
+                        date={item.releaseDate}
+                        description={item.description}
+                    />
+
                 </div>
                 ))}
+                
          </div> 
         </div>
     )
