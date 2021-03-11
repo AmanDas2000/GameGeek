@@ -82,16 +82,6 @@ background: radial-gradient(circle, rgba(55,55,56,1) 0%, rgba(0,0,0,1) 100%);
 .review-text{
   height: 100px;
 }
-.testBlack{
-  background-color: #212121;
-  font-family: 'Roboto Condensed', sans-serif!important;
-}
-.MuiDialog-paper{
-  border:1px solid green;
-}
-
-
-
 
 .games{
   display:grid;
