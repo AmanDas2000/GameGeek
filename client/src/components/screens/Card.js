@@ -1,11 +1,39 @@
 import React, { useState } from 'react'
 import { Link,useHistory } from 'react-router-dom'
 import M from 'materialize-css'
+import Button from '@material-ui/core/Button';
+import TextField from '@material-ui/core/TextField';
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import Slide from '@material-ui/core/Slide';
 
 
-function Card({ id, photo, name, oldrating,category,company,number }) {
-  const history=useHistory()
-  const [rating, setRating] = useState(0)
+
+function Card({ id, photo, name, oldrating,genre,company,platform,number,date,description }) {
+  
+  const history = useHistory()
+  const [rating, setRating] = useState("")
+  const [title, setTitle] = useState("")
+  const [open, setOpen] = React.useState(false);
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+  
+  const handleClose = () => {
+    setOpen(false);
+  };
+
+  const [openReview, setOpenReview] = React.useState(false);
+  const handleClickOpenReview = () => {
+    setOpenReview(true);
+  };
+  
+  const handleCloseReview = () => {
+    setOpenReview(false);
+  };
 
   const PostData = () => {
     console.log({rating})
@@ -26,7 +54,7 @@ function Card({ id, photo, name, oldrating,category,company,number }) {
                     M.toast({html: data.error, classes:"#e57373 red"})
                 }
                 else {
-                    M.toast({ html: "rated", classes: "#43a047 green darken-1" })
+                    M.toast({ html: data.message, classes: "#43a047 green darken-1" })
                     history.push('/')
                 }
             }).catch(err => {
@@ -46,32 +74,131 @@ function Card({ id, photo, name, oldrating,category,company,number }) {
 	         	))}
 	        </div>  */}
     <div class="card-image waves-effect waves-block waves-light">
-              <img className="activator" src={photo} alt={name} />
+              <img className="activator" onClick={handleClickOpen} src={photo} alt={name} />
               
     </div>
             <div class="card-action">
             
-              <span className="card-title activator white-text text-darken-4">{ name}<i class="material-icons right">more_vert</i></span>
+            <span className="card-title activator white-text text-darken-4">{name}<i onClick={ handleClickOpen} class="material-icons right">more_vert</i></span>
               <p class="rate white-text text-darken-4">{oldrating}/10 ({number} reviews)</p>
               
               
     </div>
-    <div class="card-reveal">
-      <span class="card-title text-darken-4">{name}<i class="material-icons right">close</i></span>
-              <p>genre: {category}</p>
-            <p>company: {company}</p>
-              <input
+    <div >
+      
+              
+            
+            <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
+              <DialogTitle className="testBlack white-text" id="form-dialog-title">{name}</DialogTitle>
+              
+        <DialogContent className="testBlack white-text" >
+          <div className="game_single" >
+            <div className="dp" style={{
+                        margin: "5px auto",
+                        
+            }}>
+                    <img
+                      style={{
+                        width: "100%",
+                        height:"100%"
+                      }}
+                          className="card-image small"
+                          src={photo}
+                          alt={name} />
+            </div>
+              
+            <div style={{
+              margin:"20px 20px"
+            }}>
+              <p>
+                Genre : {genre}
+              </p>
+              <p>
+               Platform : {platform?.join(", ")}
+              </p>
+              <p>
+                Realesed: date
+              </p>
+              <p>
+                 From : {company?.join(", ")}
+              </p>
+              
+              </div>
+    </div>
+          <DialogContentText className="testBlack white-text" style={{
+            margin:"10px auto"
+          }}>
+             {description} 
+          </DialogContentText>
+          <DialogContentText className="game_single testBlack white-text">
+            <div>
+              review1
+            </div>
+            <div>
+              review2
+            </div>
+          </DialogContentText>
+          
+        </DialogContent>
+              <DialogActions className="testBlack white-text">
+              <div class="switch">
+    <label className="toggle white-text">
+      Favourite
+      <input type="checkbox"/>
+      <span class="lever"></span>
+      
+    </label>
+  </div>
+        <button className="waves-effect waves-light btn #1b5e20 green darken-1"
+                onClick={()=>{handleClickOpenReview()}}>
+                    write review
+                </button>
+    <Dialog style={{backgroundColor: 'rgba(255, 255, 255, 0.8)'}} open={openReview} onClose={handleCloseReview} aria-labelledby="form-dialog-title">
+      <DialogTitle className="testBlack white-text" id="form-dialog-title">Review</DialogTitle>
+      <DialogContent className="testBlack white-text">
+        <DialogContentText className="testBlack white-text">
+                    {name}
+                    
+                  </DialogContentText>
+                    <input
+                      className="testBlack white-text"
                     type='text'
-                    placeholder='rate'
+                    placeholder='Title'
+                    value={title}
+                    onChange={(e) => setTitle(e.target.value)}
+                          
+                />
+                    <textarea
+                      className="testBlack white-text"
+                    className="review-text"
+                    type='text'
+                    rows = "5" cols = "60"
+                    placeholder='lets talk about the game'
+                    //onChange={(e) => setRating(e.target.value)}
+                />
+        <input
+                    className="testBlack white-text"
+                    type='text'
+                    placeholder='rate from 1 to 10'
                     value={rating}
                     onChange={(e) => setRating(e.target.value)}
                 />
-            <button className="waves-effect waves-light btn #1b5e20 green darken-1"
+      </DialogContent>
+      <DialogActions className="testBlack white-text">
+        <Button onClick={handleCloseReview} className="green-text">
+          close
+        </Button>
+        <button className="waves-effect waves-light btn #1b5e20 green darken-1"
                 onClick={()=>{PostData()}}>
                     rate
                 </button>
-              
+      </DialogActions>
+    </Dialog>
+        </DialogActions>
+      </Dialog>
     </div>
+
+  
   </div>
     </div>
   </div>

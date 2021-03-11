@@ -9,6 +9,7 @@ function Navbar() {
     if (state) {
       return [
         <li><Link className="link" to="/">Home</Link></li>,
+        <li><Link className="link" to="/review">testing</Link></li>,
         <li><Link className="link" to="/mylist">{ state.name}'s List</Link></li>,
         <li>{console.log(state)}
              <button className="logout waves-effect waves-light #c62828 red darken-3 btn-small"

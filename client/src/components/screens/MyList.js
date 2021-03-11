@@ -47,12 +47,12 @@ function MyList() {
             }}>
                 <div>
                     <img class="dp"
-                        style={{ width: "160px", height: "160px", borderRadius: "80px" }} 
-                        src={games[0]?.postedBy.photo}
+                        style={{ width: "160px", height: "160px", borderRadius: "80px" }}
+                        src={state?.photo}
                         />
                 </div>
                 <div class="white-text">
-                    <h4>{ state.name}</h4> 
+                    <h4>{ state?.name}</h4> 
                     
                     <div style={{
                         display: "flex",
@@ -77,9 +77,21 @@ function MyList() {
             {/* <ParticlesBg color="black" type="cobweb" bg={true} /> */}
             {games?.map(item => (
                 <div>
-                    <Card id={item._id} photo={item.game.photo} name={item.game.name} oldrating={item.rating} number={ item.game.noOfRating}/>
-                </div>
+                <div>
+                    <Card id={item._id}
+                        photo={item.coverPhoto}
+                        name={item.name}
+                        oldrating={rate(item.totalRating, item.noOfRating)}
+                        genre={item.genre} company={item.company}
+                        number={item.noOfRating} platform={item.platform}
+                        date={item.releaseDate}
+                        description={item.description}
+                        />
+                    </div>
+                    </div>
+                        
                 ))}
+                
          </div> 
         </div>
     )

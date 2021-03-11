@@ -1,11 +1,13 @@
 import React,{useEffect,createContext,useReducer,useContext} from 'react';
 import NavBar from './components/Navbar'
+import Footer from './components/Footer'
 import "./App.css"
 import {BrowserRouter,Route,Switch,useHistory} from 'react-router-dom'
 import Home from './components/screens/Home'
 import Signin from './components/screens/Signin'
 import Signup from './components/screens/Signup'
 import MyList from './components/screens/MyList'
+import Review from './components/screens/Review'
 import {reducer,initialState} from './reducers/userReducer'
 export const UserContext = createContext()
 
@@ -35,6 +37,9 @@ const Routing = ()=>{
       <Route path="/myList">
         <MyList />
       </Route>
+      <Route path="/review">
+        <Review />
+      </Route>
       
     </Switch>
   )
@@ -45,8 +50,16 @@ function App() {
   return (
     <UserContext.Provider value={{state,dispatch}}>
     <BrowserRouter>
-      <NavBar />
-      <Routing />
+        <header>
+        <NavBar />
+      </header>
+        <main>
+        <Routing />
+        </main>
+        <footer>
+        <Footer />
+        </footer>
+        
       
     </BrowserRouter>
     </UserContext.Provider>
