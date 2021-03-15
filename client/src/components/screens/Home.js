@@ -38,12 +38,20 @@ function Home() {
   
  
            <div className="games">
-            {/* <ParticlesBg color="black" type="cobweb" bg={true} /> */}
+            {/* <ParticlesBg color="#1b4332" type="cobweb" bg={true} /> */}
             
             
             {games?.map(item => (
-                <div>
-                    <Card id={item._id} photo={item.photo} name={item.name} oldrating={rate(item.totalRating, item.noOfRating)} category={item.category} company={item.company} number={item.noOfRating} />
+                <div >
+                    <Card id={item._id}
+                        photo={item.coverPhoto}
+                        name={item.name}
+                        oldrating={rate(item.totalRating, item.noOfRating)}
+                        genre={item.genre} company={item.company}
+                        number={item.noOfRating} platform={item.platform}
+                        date={item.releaseDate}
+                        description={item.description}
+                    />
 
                 </div>
                 ))}

@@ -122,7 +122,8 @@ function Card({
       });
   };
 
-  const addOnGoing= () => {
+  const deleteCompleted = () => {
+    console.log({ rating });
     fetch("/updatelist", {
       method: "post",
       headers: {
@@ -131,8 +132,8 @@ function Card({
       },
       body: JSON.stringify({
         gameId : id,
-        listType : "Curr",
-        deleteGame : false
+        listType : "Completed",
+        deleteGame : true
       }),
     })
       .then((res) => res.json())
@@ -149,7 +150,6 @@ function Card({
         console.log(err);
       });
   };
-
   return (
     <div className="row ">
       <div className="col s40 m40">
@@ -238,14 +238,7 @@ function Card({
               </DialogContent>
               <DialogActions className="testBlack white-text">
                 <div class="switch"></div>
-                <button
-                  className="waves-effect waves-light btn #4a148c purple darken-4"
-                  onClick={() => {
-                    addOnGoing();
-                  }}
-                >
-                  Playing
-                </button>
+
                 <button
                   className="waves-effect waves-light btn #1976d2 blue darken-2"
                   onClick={() => {
@@ -261,6 +254,14 @@ function Card({
                   }}
                 >
                   write review
+                </button>
+                <button
+                  className="waves-effect waves-light btn #c62828 red darken-3"
+                  onClick={() => {
+                    deleteCompleted();
+                  }}
+                >
+                  Remove
                 </button>
                 <Dialog
                   disableAutoFocus="false"
@@ -316,7 +317,7 @@ function Card({
                           <Slider
                             style={{ color: "green" }}
                             min={0}
-                            step={1}
+                            step={0.1}
                             max={10}
                             value={typeof rating === "number" ? rating : 0}
                             onChange={handleSliderChange}

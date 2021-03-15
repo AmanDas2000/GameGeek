@@ -1,5 +1,6 @@
 import React,{useEffect,createContext,useReducer,useContext} from 'react';
 import NavBar from './components/Navbar'
+import Footer from './components/Footer'
 import "./App.css"
 import {BrowserRouter,Route,Switch,useHistory} from 'react-router-dom'
 import Home from './components/screens/Home'
@@ -49,8 +50,16 @@ function App() {
   return (
     <UserContext.Provider value={{state,dispatch}}>
     <BrowserRouter>
-      <NavBar />
-      <Routing />
+        <header>
+        <NavBar />
+      </header>
+        <main>
+        <Routing />
+        </main>
+        <footer>
+        <Footer />
+        </footer>
+        
       
     </BrowserRouter>
     </UserContext.Provider>
