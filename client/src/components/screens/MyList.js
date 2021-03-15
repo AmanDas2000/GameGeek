@@ -63,8 +63,10 @@ function MyList() {
     setValue(newValue);
   };
   const [fav, setFav] = useState([]);
+
   const [Curr, setCurr] = useState([]);
   const [Completed, setCompleted] = useState([]);
+
     const [games, setGames] = useState([]);
     const history = useHistory()
   const { state, dispatch } = useContext(UserContext)
@@ -104,6 +106,7 @@ function MyList() {
         })
         },[])
 
+
         useEffect(()=>{
           fetch("/getCompleted", {
           method: "get",
@@ -137,6 +140,7 @@ function MyList() {
           console.log(err)
           })
           },[])
+
         
     //console.log(state);
     //console.log(fav);
@@ -202,7 +206,9 @@ function MyList() {
             {/* <ParticlesBg color="black" type="cobweb" bg={true} /> */}
             {fav?.map(item => (
                 <div>
+
                     <CardFav id={item._id}
+
                         photo={item.coverPhoto}
                         name={item.name}
                         oldrating={rate(item.totalRating, item.noOfRating)}
@@ -218,6 +224,7 @@ function MyList() {
          </div> 
       </TabPanel>
       <TabPanel value={value} index={1}>
+
       <div className="games">
       {Curr?.map(item => (
                 <div>
@@ -252,6 +259,7 @@ function MyList() {
                 </div>
                 ))}
       </div>
+
       </TabPanel>
       <TabPanel style={{}} value={value} index={3}>
         <div className="games">
