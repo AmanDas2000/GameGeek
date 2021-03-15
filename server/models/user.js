@@ -1,10 +1,6 @@
 const mongoose = require('mongoose')
 
 const userSchema = new mongoose.Schema({
-    userName: {
-        type: String,
-        required: true
-    },
     IGN: {
         type: String,
         default: "n00b"

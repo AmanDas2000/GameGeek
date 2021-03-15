@@ -1,7 +1,11 @@
+:root {
+  --color: lime;
+}
+/* lime,yellow */
 a{
   font-family: 'DotGothic16', sans-serif;
   color: white !important;
-  text-shadow: 1px 1px 15px green;
+  text-shadow: 1px 1px 15px var(--color);
 }
 .link{
   font-family: 'Roboto Condensed', sans-serif;
@@ -21,10 +25,13 @@ background: radial-gradient(circle, rgba(55,55,56,1) 0%, rgba(0,0,0,1) 100%);
 }  */
 
 .nav-wrapper{
-  box-shadow: 0px 0px 10px green;
+  box-shadow: 0px 0px 10px var(--color);
 }
 .footer{
-  box-shadow: 0px 0px 10px green;
+  box-shadow: 0px 0px 10px var(--color);
+    left: 0;
+    bottom: 0;
+    width: 100%;
 }
 
 .mycard{
@@ -69,7 +76,7 @@ background: radial-gradient(circle, rgba(55,55,56,1) 0%, rgba(0,0,0,1) 100%);
 }
 
 .card{
-  border:1px solid green;
+  border:1px solid var(--color);
   min-height:390px;
 }
 .card-title{
@@ -82,6 +89,17 @@ background: radial-gradient(circle, rgba(55,55,56,1) 0%, rgba(0,0,0,1) 100%);
 .review-text{
   height: 100px;
 }
+.testBlack{
+  background-color: #212121;
+  font-family: 'Roboto Condensed', sans-serif!important;
+}
+.MuiDialog-paper{
+  border:1px solid var(--color);
+}
+
+
+
+
 
 .games{
   display:grid;
@@ -103,9 +121,17 @@ background: radial-gradient(circle, rgba(55,55,56,1) 0%, rgba(0,0,0,1) 100%);
 }
 .dp{
   border-width: 2px;
-  box-shadow: 0px 0px 10px green;
+  box-shadow: 0px 0px 10px var(--color);
 }
 
+.footer{
+position: relative;
+left: 0;
+bottom: 0;
+right: 0;
+width: 100%;
+height: 160px;
+}
 
 @media only screen and (max-width : 1366px) {
   .games{
@@ -142,3 +168,4 @@ background: radial-gradient(circle, rgba(55,55,56,1) 0%, rgba(0,0,0,1) 100%);
     width:100%;
   }
 }
+

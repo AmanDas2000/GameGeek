@@ -3,7 +3,7 @@ import React from 'react'
 function Footer() {
     return (
         <div>
-            <footer class="page-footer footer #212121 grey darken-4">
+            <footer class="page-footer footer #212121 grey darken-4" style = {{textAlign : "center"}}>
           <div class="container">
             <div>
               <div class="col l6 s12">
@@ -13,7 +13,7 @@ function Footer() {
             </div>
           </div>
           <div class="footer-copyright">
-            <div class="container">
+            <div class="container" style ={{textAlign:"left"}}>
             © 2021 GameGeek.GG
             <a class="grey-text text-lighten-4 right" href="#!">Source Code</a>
             </div>

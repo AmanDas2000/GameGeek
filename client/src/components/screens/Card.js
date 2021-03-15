@@ -8,23 +8,37 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
-<<<<<<< HEAD
 import Slide from '@material-ui/core/Slide';
+import { makeStyles } from '@material-ui/core/styles';
+import Grid from '@material-ui/core/Grid';
+import Typography from '@material-ui/core/Typography';
+import Slider from '@material-ui/core/Slider';
+import Input from '@material-ui/core/Input';
 
 
 
 function Card({ id, photo, name, oldrating,genre,company,platform,number,date,description }) {
-  
+  const [value, setValue] = React.useState(0);
+  const [rating, setRating] = useState(0);
+
+  const handleSliderChange = (event, newRating) => {
+    setRating(newRating);
+  };
+
+  const handleInputChange = (event) => {
+    setRating(event.target.value === '' ? '' : Number(event.target.value));
+  };
+
+  const handleBlur = () => {
+    if (rating < 0) {
+      setRating(0);
+    } else if (rating > 10) {
+      setRating(10);
+    }
+  };
   const history = useHistory()
-  const [rating, setRating] = useState("")
+  
   const [title, setTitle] = useState("")
-=======
-
-
-function Card({ id, photo, name, oldrating,category,company,number }) {
-  const history=useHistory()
-  const [rating, setRating] = useState("")
->>>>>>> e5d8a44a5e96c35ab098ebfda8e9a6f47163693f
   const [open, setOpen] = React.useState(false);
   const handleClickOpen = () => {
     setOpen(true);
@@ -33,7 +47,6 @@ function Card({ id, photo, name, oldrating,category,company,number }) {
   const handleClose = () => {
     setOpen(false);
   };
-<<<<<<< HEAD
 
   const [openReview, setOpenReview] = React.useState(false);
   const handleClickOpenReview = () => {
@@ -43,8 +56,6 @@ function Card({ id, photo, name, oldrating,category,company,number }) {
   const handleCloseReview = () => {
     setOpenReview(false);
   };
-=======
->>>>>>> e5d8a44a5e96c35ab098ebfda8e9a6f47163693f
 
   const PostData = () => {
     console.log({rating})
@@ -95,7 +106,6 @@ function Card({ id, photo, name, oldrating,category,company,number }) {
               
               
     </div>
-<<<<<<< HEAD
     <div >
       
               
@@ -109,14 +119,14 @@ function Card({ id, photo, name, oldrating,category,company,number }) {
                         margin: "5px auto",
                         
             }}>
-                    <img
-                      style={{
-                        width: "100%",
-                        height:"100%"
-                      }}
-                          className="card-image small"
-                          src={photo}
-                          alt={name} />
+           <img
+              style={{
+                  width: "100%",
+                  height:"100%"
+                    }}
+                  className="card-image small"
+                  src={photo}
+                  alt={name} />
             </div>
               
             <div style={{
@@ -165,7 +175,9 @@ function Card({ id, photo, name, oldrating,category,company,number }) {
                 onClick={()=>{handleClickOpenReview()}}>
                     write review
                 </button>
-    <Dialog style={{backgroundColor: 'rgba(255, 255, 255, 0.8)'}} open={openReview} onClose={handleCloseReview} aria-labelledby="form-dialog-title">
+                <Dialog disableAutoFocus="false" style={{
+                  backgroundColor: 'rgba(0, 0, 0, 0.8)',
+                }} open={openReview} onClose={handleCloseReview} aria-labelledby="form-dialog-title">
       <DialogTitle className="testBlack white-text" id="form-dialog-title">Review</DialogTitle>
       <DialogContent className="testBlack white-text">
         <DialogContentText className="testBlack white-text">
@@ -187,49 +199,60 @@ function Card({ id, photo, name, oldrating,category,company,number }) {
                     rows = "5" cols = "60"
                     placeholder='lets talk about the game'
                     //onChange={(e) => setRating(e.target.value)}
-                />
-        <input
+                    />
+                    <div className="testBlack" style={{
+      width: 250,
+    }}>
+      <Typography className="testBlack white-text" id="input-slider" gutterBottom>
+        Rating
+      </Typography>
+      <Grid container spacing={2} alignItems="center">
+        <Grid item>
+          
+        </Grid>
+        <Grid item xs >
+            <Slider
+            style={{color:"green"}}
+            min={0}
+            step={0.1}
+            max={10}
+            value={typeof rating === 'number' ? rating : 0}
+            onChange={handleSliderChange}
+            valueLabelDisplay="auto"
+            aria-labelledby="input-slider"
+          />
+        </Grid>
+        {/* <Grid item >
+           <Input
+            class="white-text"
+            style={{
+                width: 42
+            }}
+            value={rating}
+            margin="dense"
+            onChange={handleInputChange}
+            onBlur={handleBlur}
+            inputProps={{
+              step: 0.1,
+              min: 0,
+              max: 10,
+              type: 'number',
+              'aria-labelledby': 'input-slider',
+            }}
+          />
+        </Grid> */}
+      </Grid>
+    </div>
+        {/* <input
                     className="testBlack white-text"
                     type='text'
-=======
-    <div class="card-reveal">
-      <span class="card-title text-darken-4">{name}<i class="material-icons right">close</i></span>
-              <p>genre: {category}</p>
-            <p>company: {company}</p>
-
-  <div>
-    <Button variant="outlined" color="primary" onClick={handleClickOpen}>
-      Write Review
-    </Button>
-    <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
-      <DialogTitle id="form-dialog-title">Review</DialogTitle>
-      <DialogContent>
-        <DialogContentText>
-                    Game: {name}
-                    
-                  </DialogContentText>
-        <textarea
-                    className="review-text"
-                    type='text'
-                    rows = "5" cols = "60"
-                    placeholder='lets talk about the game'
-                    //onChange={(e) => setRating(e.target.value)}
-                />
-        <input
-                    type='text'
->>>>>>> e5d8a44a5e96c35ab098ebfda8e9a6f47163693f
                     placeholder='rate from 1 to 10'
                     value={rating}
                     onChange={(e) => setRating(e.target.value)}
-                />
+                /> */}
       </DialogContent>
-<<<<<<< HEAD
       <DialogActions className="testBlack white-text">
         <Button onClick={handleCloseReview} className="green-text">
-=======
-      <DialogActions>
-        <Button onClick={handleClose} color="primary">
->>>>>>> e5d8a44a5e96c35ab098ebfda8e9a6f47163693f
           close
         </Button>
         <button className="waves-effect waves-light btn #1b5e20 green darken-1"
@@ -238,14 +261,8 @@ function Card({ id, photo, name, oldrating,category,company,number }) {
                 </button>
       </DialogActions>
     </Dialog>
-<<<<<<< HEAD
         </DialogActions>
       </Dialog>
-=======
-  </div>
-
-              
->>>>>>> e5d8a44a5e96c35ab098ebfda8e9a6f47163693f
     </div>
 
   

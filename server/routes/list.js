@@ -11,15 +11,12 @@ const Game = mongoose.model("Game");
 const List = mongoose.model("List");
 
 // We ask for the User ID and the listType in the body, listType is a Number.
-router.get("/getlist", (req, res) => {
-    const {
-        userId,
-        listType
-    } = req.body;
+router.get("/getFav",requireLogin, (req, res) => {
     List.findOne({
-            listType: listType,
-            addedBy: userId
-        }).populate("games","_id name")
+            listType: "Fav",
+            addedBy: req.user._id,
+        }).populate("games",
+        "_id name company coverPhoto noOfRating totalRating genre releasedDate platform description")
         .then((getlist) => {
             res.json({
                 getlist

@@ -38,11 +38,11 @@ function Home() {
   
  
            <div className="games">
-            {/* <ParticlesBg color="black" type="cobweb" bg={true} /> */}
+            {/* <ParticlesBg color="#1b4332" type="cobweb" bg={true} /> */}
             
             
             {games?.map(item => (
-                <div>
+                <div >
                     <Card id={item._id}
                         photo={item.coverPhoto}
                         name={item.name}
