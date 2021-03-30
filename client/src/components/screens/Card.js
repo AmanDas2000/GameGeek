@@ -1,23 +1,33 @@
-import React, { useState } from 'react'
-import { Link,useHistory } from 'react-router-dom'
-import M from 'materialize-css'
-import Button from '@material-ui/core/Button';
-import TextField from '@material-ui/core/TextField';
-import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
-import DialogTitle from '@material-ui/core/DialogTitle';
-import Slide from '@material-ui/core/Slide';
-import { makeStyles } from '@material-ui/core/styles';
-import Grid from '@material-ui/core/Grid';
-import Typography from '@material-ui/core/Typography';
-import Slider from '@material-ui/core/Slider';
-import Input from '@material-ui/core/Input';
+import React, { useState } from "react";
+import { Link, useHistory } from "react-router-dom";
+import M from "materialize-css";
+import Button from "@material-ui/core/Button";
+import TextField from "@material-ui/core/TextField";
+import Dialog from "@material-ui/core/Dialog";
+import DialogActions from "@material-ui/core/DialogActions";
+import DialogContent from "@material-ui/core/DialogContent";
+import DialogContentText from "@material-ui/core/DialogContentText";
+import DialogTitle from "@material-ui/core/DialogTitle";
+import Slide from "@material-ui/core/Slide";
+import { makeStyles } from "@material-ui/core/styles";
+import Grid from "@material-ui/core/Grid";
+import Typography from "@material-ui/core/Typography";
+import Slider from "@material-ui/core/Slider";
+import Input from "@material-ui/core/Input";
 
-
-
-function Card({ id, photo, name, oldrating,genre,company,platform,number,date,description }) {
+function Card({
+  id,
+  photo,
+  name,
+  oldrating,
+  genre,
+  company,
+  platform,
+  number,
+  date,
+  description,
+}) {
+  const [findReview, setFindReview] = useState("");
   const [value, setValue] = React.useState(0);
   const [rating, setRating] = useState(0);
 
@@ -26,7 +36,7 @@ function Card({ id, photo, name, oldrating,genre,company,platform,number,date,de
   };
 
   const handleInputChange = (event) => {
-    setRating(event.target.value === '' ? '' : Number(event.target.value));
+    setRating(event.target.value === "" ? "" : Number(event.target.value));
   };
 
   const handleBlur = () => {
@@ -36,14 +46,15 @@ function Card({ id, photo, name, oldrating,genre,company,platform,number,date,de
       setRating(10);
     }
   };
-  const history = useHistory()
-  
-  const [title, setTitle] = useState("")
+  const history = useHistory();
+
+  const [title, setTitle] = useState(null);
+  const [review, setReview] = useState(null);
   const [open, setOpen] = React.useState(false);
   const handleClickOpen = () => {
     setOpen(true);
   };
-  
+
   const handleClose = () => {
     setOpen(false);
   };
@@ -52,42 +63,101 @@ function Card({ id, photo, name, oldrating,genre,company,platform,number,date,de
   const handleClickOpenReview = () => {
     setOpenReview(true);
   };
-  
+
   const handleCloseReview = () => {
     setOpenReview(false);
   };
 
   const PostData = () => {
-    console.log({rating})
+    console.log({ rating });
     fetch("/rate", {
-        method: "post",
-        headers: {
-          "Authorization": "Bearer " + localStorage.getItem("jwt"),
-          "Content-Type": "application/json"
+      method: "post",
+      headers: {
+        Authorization: "Bearer " + localStorage.getItem("jwt"),
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        id,
+        review: {
+          title: title,
+          description: review,
         },
-        body: JSON.stringify({
-            id,
-            rating:parseInt(rating)
-        })
-    }).then(res => res.json())
-        .then(data => {
-            console.log(data)
-                if (data.error) { 
-                    M.toast({html: data.error, classes:"#e57373 red"})
-                }
-                else {
-                    M.toast({ html: data.message, classes: "#43a047 green darken-1" })
-                    history.push('/')
-                }
-            }).catch(err => {
-                console.log(err)
-            })
-    }
+        rating: parseInt(rating),
+      }),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        console.log(data);
+        if (data.error) {
+          M.toast({ html: data.error, classes: "#e57373 red" });
+        } else {
+          M.toast({ html: data.message, classes: "#43a047 green darken-1" });
+          //history.push("/");
+          window.parent.location.reload();
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+ 
+  const addFav = () => {
+    console.log({ rating });
+    fetch("/updatelist", {
+      method: "post",
+      headers: {
+        Authorization: "Bearer " + localStorage.getItem("jwt"),
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        gameId : id,
+        listType : "Fav",
+        deleteGame : false
+      }),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        console.log(data);
+        if (data.error) {
+          M.toast({ html: data.error, classes: "#e57373 red" });
+        } else {
+          M.toast({ html: data.message, classes: "#43a047 green darken-1" });
+          history.push("/");
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
   
+    //   useEffect(()=>{
+    //     fetch("/findReview", {
+    //       method: "get",
+    //       headers: {
+    //         "Content-Type": "application/json",
+    //       },
+    //       body: JSON.stringify({
+    //         gameId : id,
+    //       }),
+    //     })
+    //       .then((res) => res.json())
+    //       .then((data) => {
+    //         console.log(data);
+    //         if (data.error) {
+    //           M.toast({ html: data.error, classes: "#e57373 red" });
+    //         } else {
+    //           M.toast({ html: data.message, classes: "#43a047 green darken-1" });
+    //           history.push("/");
+    //         }
+    //       })
+    //       .catch((err) => {
+    //         console.log(err);
+    // },[])
+
   return (
-      <div className="row ">
-    <div className="col s40 m40">
-          <div className="card sticky-action #212121 grey darken-4">
+    <div className="row ">
+      <div className="col s40 m40">
+        <div className="card sticky-action #212121 grey darken-4">
           {/* <div className="product__rating">
                 {Array(rating)
 	         	.fill()
@@ -95,134 +165,164 @@ function Card({ id, photo, name, oldrating,genre,company,platform,number,date,de
 	         		<p>🔥</p>
 	         	))}
 	        </div>  */}
-    <div class="card-image waves-effect waves-block waves-light">
-              <img className="activator" onClick={handleClickOpen} src={photo} alt={name} />
-              
-    </div>
-            <div class="card-action">
-            
-            <span className="card-title activator white-text text-darken-4">{name}<i onClick={ handleClickOpen} class="material-icons right">more_vert</i></span>
-              <p class="rate white-text text-darken-4">{oldrating}/10 ({number} reviews)</p>
-              
-              
-    </div>
-    <div >
-      
-              
-            
-            <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
-              <DialogTitle className="testBlack white-text" id="form-dialog-title">{name}</DialogTitle>
-              
-        <DialogContent className="testBlack white-text" >
-          <div className="game_single" >
-            <div className="dp" style={{
-                        margin: "5px auto",
-                        
-            }}>
-           <img
-              style={{
-                  width: "100%",
-                  height:"100%"
+          <div class="card-image waves-effect waves-block waves-light">
+            <img
+              className="activator"
+              onClick={handleClickOpen}
+              src={photo}
+              alt={name}
+            />
+          </div>
+          <div class="card-action">
+            <span className="card-title activator white-text text-darken-4">
+              {name}
+              <i onClick={handleClickOpen} class="material-icons right">
+                more_vert
+              </i>
+            </span>
+            <p class="rate white-text text-darken-4">
+              {oldrating}/10 ({number} reviews)
+            </p>
+          </div>
+          <div>
+            <Dialog
+              open={open}
+              onClose={handleClose}
+              aria-labelledby="form-dialog-title"
+            >
+              <DialogTitle
+                className="testBlack white-text"
+                id="form-dialog-title"
+              >
+                {name}
+              </DialogTitle>
+
+              <DialogContent className="testBlack white-text">
+                <div className="game_single">
+                  <div
+                    className="dp"
+                    style={{
+                      margin: "5px auto",
                     }}
-                  className="card-image small"
-                  src={photo}
-                  alt={name} />
-            </div>
-              
-            <div style={{
-              margin:"20px 20px"
-            }}>
-              <p>
-                Genre : {genre}
-              </p>
-              <p>
-               Platform : {platform?.join(", ")}
-              </p>
-              <p>
-                Realesed: date
-              </p>
-              <p>
-                 From : {company?.join(", ")}
-              </p>
-              
-              </div>
-    </div>
-          <DialogContentText className="testBlack white-text" style={{
-            margin:"10px auto"
-          }}>
-             {description} 
-          </DialogContentText>
-          <DialogContentText className="game_single testBlack white-text">
-            <div>
-              review1
-            </div>
-            <div>
-              review2
-            </div>
-          </DialogContentText>
-          
-        </DialogContent>
+                  >
+                    <img
+                      style={{
+                        width: "100%",
+                        height: "100%",
+                      }}
+                      className="card-image small"
+                      src={photo}
+                      alt={name}
+                    />
+                  </div>
+
+                  <div
+                    style={{
+                      margin: "20px 20px",
+                    }}
+                  >
+                    <p>Genre : {genre}</p>
+                    <p>Platform : {platform?.join(", ")}</p>
+                    <p>Realesed: date</p>
+                    <p>From : {company?.join(", ")}</p>
+                  </div>
+                </div>
+                <DialogContentText
+                  className="testBlack white-text"
+                  style={{
+                    margin: "10px auto",
+                  }}
+                >
+                  {description}
+                </DialogContentText>
+                <DialogContentText className="game_single testBlack white-text">
+                  <div>review1</div>
+                  <div>review2</div>
+                </DialogContentText>
+              </DialogContent>
               <DialogActions className="testBlack white-text">
-              <div class="switch">
-    <label className="toggle white-text">
-      Favourite
-      <input type="checkbox"/>
-      <span class="lever"></span>
-      
-    </label>
-  </div>
-        <button className="waves-effect waves-light btn #1b5e20 green darken-1"
-                onClick={()=>{handleClickOpenReview()}}>
-                    write review
+                <div class="switch"></div>
+                <button
+                  className="waves-effect waves-light btn #1976d2 blue darken-2"
+                  onClick={() => {
+                    addFav();
+                  }}
+                >
+                  add to Favourites
                 </button>
-                <Dialog disableAutoFocus="false" style={{
-                  backgroundColor: 'rgba(0, 0, 0, 0.8)',
-                }} open={openReview} onClose={handleCloseReview} aria-labelledby="form-dialog-title">
-      <DialogTitle className="testBlack white-text" id="form-dialog-title">Review</DialogTitle>
-      <DialogContent className="testBlack white-text">
-        <DialogContentText className="testBlack white-text">
-                    {name}
-                    
-                  </DialogContentText>
+                <button
+                  className="waves-effect waves-light btn #1b5e20 green darken-1"
+                  onClick={() => {
+                    handleClickOpenReview();
+                  }}
+                >
+                  write review
+                </button>
+                <Dialog
+                  disableAutoFocus="false"
+                  style={{
+                    backgroundColor: "rgba(0, 0, 0, 0.8)",
+                  }}
+                  open={openReview}
+                  onClose={handleCloseReview}
+                  aria-labelledby="form-dialog-title"
+                >
+                  <DialogTitle
+                    className="testBlack white-text"
+                    id="form-dialog-title"
+                  >
+                    Review
+                  </DialogTitle>
+                  <DialogContent className="testBlack white-text">
+                    <DialogContentText className="testBlack white-text">
+                      {name}
+                    </DialogContentText>
                     <input
                       className="testBlack white-text"
-                    type='text'
-                    placeholder='Title'
-                    value={title}
-                    onChange={(e) => setTitle(e.target.value)}
-                          
-                />
+                      type="text"
+                      placeholder="Title"
+                      value={title}
+                      onChange={(e) => setTitle(e.target.value)}
+                    />
                     <textarea
                       className="testBlack white-text"
-                    className="review-text"
-                    type='text'
-                    rows = "5" cols = "60"
-                    placeholder='lets talk about the game'
-                    //onChange={(e) => setRating(e.target.value)}
+                      className="review-text"
+                      type="text"
+                      rows="5"
+                      cols="60"
+                      placeholder="lets talk about the game"
+                      value={review}
+                      onChange={(e) => setReview(e.target.value)}
+                      //onChange={(e) => setRating(e.target.value)}
                     />
-                    <div className="testBlack" style={{
-      width: 250,
-    }}>
-      <Typography className="testBlack white-text" id="input-slider" gutterBottom>
-        Rating
-      </Typography>
-      <Grid container spacing={2} alignItems="center">
-        <Grid item>
-          
-        </Grid>
-        <Grid item xs >
-            <Slider
-            style={{color:"green"}}
-            min={0}
-            step={0.1}
-            max={10}
-            value={typeof rating === 'number' ? rating : 0}
-            onChange={handleSliderChange}
-            valueLabelDisplay="auto"
-            aria-labelledby="input-slider"
-          />
-        </Grid>
-        {/* <Grid item >
+                    <div
+                      className="testBlack"
+                      style={{
+                        width: 250,
+                      }}
+                    >
+                      <Typography
+                        className="testBlack white-text"
+                        id="input-slider"
+                        gutterBottom
+                      >
+                        Rating
+                      </Typography>
+                      <Grid container spacing={2} alignItems="center">
+                        <Grid item></Grid>
+                        <Grid item xs>
+                          <Slider
+                            style={{ color: "green" }}
+                            min={0}
+                            step={1}
+                            max={10}
+                            value={typeof rating === "number" ? rating : 0}
+                            onChange={handleSliderChange}
+                            valueLabelDisplay="auto"
+                            aria-labelledby="input-slider"
+                          />
+                        </Grid>
+                        {/* <Grid item >
            <Input
             class="white-text"
             style={{
@@ -241,35 +341,37 @@ function Card({ id, photo, name, oldrating,genre,company,platform,number,date,de
             }}
           />
         </Grid> */}
-      </Grid>
-    </div>
-        {/* <input
+                      </Grid>
+                    </div>
+                    {/* <input
                     className="testBlack white-text"
                     type='text'
                     placeholder='rate from 1 to 10'
                     value={rating}
                     onChange={(e) => setRating(e.target.value)}
                 /> */}
-      </DialogContent>
-      <DialogActions className="testBlack white-text">
-        <Button onClick={handleCloseReview} className="green-text">
-          close
-        </Button>
-        <button className="waves-effect waves-light btn #1b5e20 green darken-1"
-                onClick={()=>{PostData()}}>
-                    rate
-                </button>
-      </DialogActions>
-    </Dialog>
-        </DialogActions>
-      </Dialog>
+                  </DialogContent>
+                  <DialogActions className="testBlack white-text">
+                    <Button onClick={handleCloseReview} className="green-text">
+                      close
+                    </Button>
+                    <button
+                      className="waves-effect waves-light btn #1b5e20 green darken-1"
+                      onClick={() => {
+                        PostData();
+                      }}
+                    >
+                      rate
+                    </button>
+                  </DialogActions>
+                </Dialog>
+              </DialogActions>
+            </Dialog>
+          </div>
+        </div>
+      </div>
     </div>
-
-  
-  </div>
-    </div>
-  </div>
-    )
+  );
 }
 
-export default Card
+export default Card;

@@ -182,22 +182,23 @@ router.get("/allrating", (req, res) => {
     });
 });
 
-router.get("/allreviews", (req, res) => {
-  const { game_id } = req.body;
-  Rate.find({
-    $and: [{ postedBy: req.user._id }, { review: { $exists: true } }],
-  })
-    .populate("game", "_id name company photo noOfRating")
-    .populate("postedBy", "_id name")
-    .then((posts) => {
-      res.json({
-        posts,
-      });
-    })
-    .catch((err) => {
-      console.log(err);
-    });
-});
+// router.get("/allreviews", (req, res) => {
+//   const { gameId } = req.body;
+//   Rate.find({
+//     review: { title:  }, 
+//     game: { _id: gameId }
+//   })
+//     .populate("rate", "_id rating review")
+//     .populate("postedBy", "_id name")
+//     .then((posts) => {
+//       res.json({
+//         posts,
+//       });
+//     })
+//     .catch((err) => {
+//       console.log(err);
+//     });
+// });
 //user reviews
 router.get("/useReview", requireLogin, (req, res) => {
   Rate.find({
@@ -233,14 +234,35 @@ router.get("/userrated", requireLogin, (req, res) => {
     });
 });
 
+router.get("/findReview", (req, res) => {
+  
+  const { gameId } = req.body;
+  if (!gameId) {
+    return res.json({ message: "Provide game Id" });
+  }
+  Rate.find({
+    game:{_id:gameId},
+  })
+    .populate("rate",
+      "_id rating review") //no idea what this does
+    .then((rated) => {
+      res.json({
+        rated,
+      });
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+});
+
 //delete game rating
 router.post("/deleteRate", requireLogin, (req, res) => {
-  const { game_id } = req.body;
-  if (!game_id) {
+  const { gameId } = req.body;
+  if (!gameId) {
     return res.json({ message: "Provide game Id" });
   }
   Rate.findOneAndDelete(
-    { game: { _id: game_id }, postedBy: { _id: req.user._id } },
+    { game: { _id: gameId }, postedBy: { _id: req.user._id } },
     (error, deletedRate) => {
       if (error) console.log(error);
       else {

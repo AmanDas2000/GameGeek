@@ -7,6 +7,7 @@ import Modal from 'react-bootstrap/Modal'
 function Home() {
     const [show, setShow] = useState(false);
     const [games, setGames] = useState([]);
+    const [open, setOpen] = React.useState("");
     
     useEffect(()=>{
         fetch("/allgames", {
@@ -35,7 +36,18 @@ function Home() {
         <div>
             
             
-  
+            <input
+                    class="white-text"
+                    type='text'
+                    placeholder='text'
+                    value={open}
+                    onChange={(e)=>setOpen(e.target.value)}
+      />
+            <button
+                className="waves-effect waves-light btn #1976d2 blue darken-2"
+                onClick={() => { window.find(open) }}>
+        find
+      </button>
  
            <div className="games">
             {/* <ParticlesBg color="#1b4332" type="cobweb" bg={true} /> */}

@@ -1,25 +1,21 @@
 import React from 'react'
 
 function Review() {
-  const [open, setOpen] = React.useState(false);
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
+  const [open, setOpen] = React.useState("");
   
-  const handleClose = () => {
-    setOpen(false);
-  };
   console.log(open)
   return (
     <div>
-      <label class="switch">
-	<input class="switch-input" type="checkbox" />
-        <span class="switch-label"
-          data-on={handleClickOpen}
-          data-off={handleClose}></span>
-        {console.log(open)}
-	<span class="switch-handle"></span> 
-</label>
+      <input
+                    class="white-text"
+                    type='text'
+                    placeholder='text'
+                    value={open}
+                    onChange={(e)=>setOpen(e.target.value)}
+      />
+      <button onClick={()=>{window.find(open)}}>
+        find
+      </button>
     </div>
   )
 }

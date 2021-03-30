@@ -1,5 +1,6 @@
 import React ,{ useState,useEffect,useContext  } from 'react'
 import Card from './Card.js'
+import CardDelFav from './CardDelFav'
 import ParticlesBg from 'particles-bg'
 import {UserContext} from '../../App'
 import {Link,useHistory} from 'react-router-dom'
@@ -163,7 +164,7 @@ function MyList() {
             {/* <ParticlesBg color="black" type="cobweb" bg={true} /> */}
             {fav?.map(item => (
                 <div>
-                    <Card id={item._id}
+                    <CardDelFav id={item._id}
                         photo={item.coverPhoto}
                         name={item.name}
                         oldrating={rate(item.totalRating, item.noOfRating)}
