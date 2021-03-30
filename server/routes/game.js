@@ -2,6 +2,9 @@ const express = require('express');
 const router = express.Router();
 const mongoose = require('mongoose');
 const requireAdmin = require("../middleware/requireAdmin");
+const {
+    route
+} = require('./rate');
 const Game = mongoose.model("Game");
 
 router.get('/allgames', (req, res) => {
@@ -67,7 +70,7 @@ router.post('/addgame', requireAdmin, (req, res) => {
                 //game exists so we'll update the details
                 console.log("Game exists. Updating.");
                 Game.findByIdAndUpdate({
-                    _id : gameData._id
+                    _id: gameData._id
                 }, {
                     company: company,
                     genre: genre,
@@ -79,8 +82,8 @@ router.post('/addgame', requireAdmin, (req, res) => {
                 }, {
                     new: true
                 }, (error, updatedGameData) => {
-                    if(error) console.log(error);
-                    else    console.log("Updated game " + updatedGameData);
+                    if (error) console.log(error);
+                    else console.log("Updated game " + updatedGameData);
                 }).then((gameResult) => {
                     res.json({
                         message: "Game updated.",
@@ -92,5 +95,30 @@ router.post('/addgame', requireAdmin, (req, res) => {
     });
 });
 
+router.get("/getpopular", (req, res) => {
+    Game.find({}, null, {
+        limit: 20,
+        sort: {
+            noOfRating: -1
+        }
+    }).then(popularGames => {
+        res.json(popularGames)
+    }).catch(err => {
+        console.log(err);
+    })
+});
+
+router.get("/gethighestrated",(req,res)=> {
+    Game.find({}, null, {
+        limit: 20,
+        sort: {
+            avgRating: -1
+        }
+    }).then(highestRatedGames => {
+        res.json(highestRatedGames)
+    }).catch(err => {
+        console.log(err);
+    })
+});
 
 module.exports = router;

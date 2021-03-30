@@ -24,12 +24,13 @@ function Card({
   company,
   platform,
   number,
-  date,
+  releaseDate,
   description,
 }) {
-  const [findReview, setFindReview] = useState("");
   const [value, setValue] = React.useState(0);
   const [rating, setRating] = useState(0);
+  var date = new Date(releaseDate);
+  var formattedDate = date.getDate()+"/"+(date.getMonth()+1)+"/"+date.getFullYear();
 
   const handleSliderChange = (event, newRating) => {
     setRating(newRating);
@@ -48,8 +49,7 @@ function Card({
   };
   const history = useHistory();
 
-  const [title, setTitle] = useState(null);
-  const [review, setReview] = useState(null);
+  const [title, setTitle] = useState("");
   const [open, setOpen] = React.useState(false);
   const handleClickOpen = () => {
     setOpen(true);
@@ -78,10 +78,6 @@ function Card({
       },
       body: JSON.stringify({
         id,
-        review: {
-          title: title,
-          description: review,
-        },
         rating: parseInt(rating),
       }),
     })
@@ -92,8 +88,7 @@ function Card({
           M.toast({ html: data.error, classes: "#e57373 red" });
         } else {
           M.toast({ html: data.message, classes: "#43a047 green darken-1" });
-          //history.push("/");
-          window.parent.location.reload();
+          history.push("/");
         }
       })
       .catch((err) => {
@@ -102,7 +97,6 @@ function Card({
   };
  
   const addFav = () => {
-    console.log({ rating });
     fetch("/updatelist", {
       method: "post",
       headers: {
@@ -129,30 +123,34 @@ function Card({
         console.log(err);
       });
   };
-  
-    //   useEffect(()=>{
-    //     fetch("/findReview", {
-    //       method: "get",
-    //       headers: {
-    //         "Content-Type": "application/json",
-    //       },
-    //       body: JSON.stringify({
-    //         gameId : id,
-    //       }),
-    //     })
-    //       .then((res) => res.json())
-    //       .then((data) => {
-    //         console.log(data);
-    //         if (data.error) {
-    //           M.toast({ html: data.error, classes: "#e57373 red" });
-    //         } else {
-    //           M.toast({ html: data.message, classes: "#43a047 green darken-1" });
-    //           history.push("/");
-    //         }
-    //       })
-    //       .catch((err) => {
-    //         console.log(err);
-    // },[])
+
+  const addOnGoing= () => {
+    fetch("/updatelist", {
+      method: "post",
+      headers: {
+        Authorization: "Bearer " + localStorage.getItem("jwt"),
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        gameId : id,
+        listType : "Curr",
+        deleteGame : false
+      }),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        console.log(data);
+        if (data.error) {
+          M.toast({ html: data.error, classes: "#e57373 red" });
+        } else {
+          M.toast({ html: data.message, classes: "#43a047 green darken-1" });
+          history.push("/");
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
 
   return (
     <div className="row ">
@@ -221,9 +219,9 @@ function Card({
                       margin: "20px 20px",
                     }}
                   >
-                    <p>Genre : {genre}</p>
+                    <p>Genre : {genre?.join(", ")}</p>
                     <p>Platform : {platform?.join(", ")}</p>
-                    <p>Realesed: date</p>
+                    <p>Realesed: {formattedDate}</p>
                     <p>From : {company?.join(", ")}</p>
                   </div>
                 </div>
@@ -242,6 +240,14 @@ function Card({
               </DialogContent>
               <DialogActions className="testBlack white-text">
                 <div class="switch"></div>
+                <button
+                  className="waves-effect waves-light btn #4a148c purple darken-4"
+                  onClick={() => {
+                    addOnGoing();
+                  }}
+                >
+                  Playing
+                </button>
                 <button
                   className="waves-effect waves-light btn #1976d2 blue darken-2"
                   onClick={() => {
@@ -291,8 +297,6 @@ function Card({
                       rows="5"
                       cols="60"
                       placeholder="lets talk about the game"
-                      value={review}
-                      onChange={(e) => setReview(e.target.value)}
                       //onChange={(e) => setRating(e.target.value)}
                     />
                     <div
@@ -322,34 +326,8 @@ function Card({
                             aria-labelledby="input-slider"
                           />
                         </Grid>
-                        {/* <Grid item >
-           <Input
-            class="white-text"
-            style={{
-                width: 42
-            }}
-            value={rating}
-            margin="dense"
-            onChange={handleInputChange}
-            onBlur={handleBlur}
-            inputProps={{
-              step: 0.1,
-              min: 0,
-              max: 10,
-              type: 'number',
-              'aria-labelledby': 'input-slider',
-            }}
-          />
-        </Grid> */}
                       </Grid>
                     </div>
-                    {/* <input
-                    className="testBlack white-text"
-                    type='text'
-                    placeholder='rate from 1 to 10'
-                    value={rating}
-                    onChange={(e) => setRating(e.target.value)}
-                /> */}
                   </DialogContent>
                   <DialogActions className="testBlack white-text">
                     <Button onClick={handleCloseReview} className="green-text">
