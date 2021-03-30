@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { Link, useHistory } from "react-router-dom";
 import M from "materialize-css";
@@ -16,8 +15,7 @@ import Typography from "@material-ui/core/Typography";
 import Slider from "@material-ui/core/Slider";
 import Input from "@material-ui/core/Input";
 
-
-function Card({
+function CardFav({
   id,
   photo,
   name,
@@ -32,13 +30,11 @@ function Card({
   const [value, setValue] = React.useState(0);
   const [rating, setRating] = useState(0);
 
-
   const handleSliderChange = (event, newRating) => {
     setRating(newRating);
   };
 
   const handleInputChange = (event) => {
-
     setRating(event.target.value === "" ? "" : Number(event.target.value));
   };
 
@@ -49,11 +45,9 @@ function Card({
       setRating(10);
     }
   };
+  const history = useHistory();
 
-  const history = useHistory()
-  
-  const [title, setTitle] = useState("")
-
+  const [title, setTitle] = useState("");
   const [open, setOpen] = React.useState(false);
   const handleClickOpen = () => {
     setOpen(true);
@@ -72,63 +66,8 @@ function Card({
     setOpenReview(false);
   };
 
-  const PostData = () => {
+  const deleteCurr = () => {
     console.log({ rating });
-    fetch("/rate", {
-      method: "post",
-      headers: {
-        Authorization: "Bearer " + localStorage.getItem("jwt"),
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        id,
-        rating: parseInt(rating),
-      }),
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        console.log(data);
-        if (data.error) {
-          M.toast({ html: data.error, classes: "#e57373 red" });
-        } else {
-          M.toast({ html: data.message, classes: "#43a047 green darken-1" });
-          history.push("/");
-        }
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  };
- 
-  const addFav = () => {
-    fetch("/updatelist", {
-      method: "post",
-      headers: {
-        Authorization: "Bearer " + localStorage.getItem("jwt"),
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        gameId : id,
-        listType : "Fav",
-        deleteGame : false
-      }),
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        console.log(data);
-        if (data.error) {
-          M.toast({ html: data.error, classes: "#e57373 red" });
-        } else {
-          M.toast({ html: data.message, classes: "#43a047 green darken-1" });
-          history.push("/");
-        }
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  };
-
-  const addOnGoing= () => {
     fetch("/updatelist", {
       method: "post",
       headers: {
@@ -138,6 +77,35 @@ function Card({
       body: JSON.stringify({
         gameId : id,
         listType : "Curr",
+        deleteGame : true
+      }),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        console.log(data);
+        if (data.error) {
+          M.toast({ html: data.error, classes: "#e57373 red" });
+        } else {
+          M.toast({ html: data.message, classes: "#43a047 green darken-1" });
+          history.push("/");
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+  
+  const addCompleted = () => {
+    console.log({ rating });
+    fetch("/updatelist", {
+      method: "post",
+      headers: {
+        Authorization: "Bearer " + localStorage.getItem("jwt"),
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        gameId : id,
+        listType : "Completed",
         deleteGame : false
       }),
     })
@@ -151,6 +119,7 @@ function Card({
           history.push("/");
         }
       })
+      .then(()=>{deleteCurr()})
       .catch((err) => {
         console.log(err);
       });
@@ -167,7 +136,6 @@ function Card({
 	         		<p>🔥</p>
 	         	))}
 	        </div>  */}
-
           <div class="card-image waves-effect waves-block waves-light">
             <img
               className="activator"
@@ -243,120 +211,28 @@ function Card({
                   <div>review2</div>
                 </DialogContentText>
               </DialogContent>
-              <DialogActions className="testBlack white-text">
+              <DialogActions className="testBlack white-text ">
                 <div class="switch"></div>
                 <button
-                  className="waves-effect waves-light btn #4a148c purple darken-4"
-                  onClick={() => {
-                    addOnGoing();
-                  }}
+                  className="waves-effect waves-light btn #c62828 red darken-3 "
+                  onClick={()=>{addCompleted()}}
                 >
-                  Playing
+                  Completed
                 </button>
                 <button
-                  className="waves-effect waves-light btn #1976d2 blue darken-2"
-                  onClick={() => {
-                    addFav();
-                  }}
+                  className="waves-effect waves-light btn #c62828 red darken-3 "
+                  onClick={()=>{deleteCurr()}}
                 >
-                  add to Favourites
+                  Remove
                 </button>
-                <button
-                  className="waves-effect waves-light btn #1b5e20 green darken-1"
-                  onClick={() => {
-                    handleClickOpenReview();
-                  }}
-                >
-                  write review
-                </button>
-                <Dialog
-                  disableAutoFocus="false"
-                  style={{
-                    backgroundColor: "rgba(0, 0, 0, 0.8)",
-                  }}
-                  open={openReview}
-                  onClose={handleCloseReview}
-                  aria-labelledby="form-dialog-title"
-                >
-                  <DialogTitle
-                    className="testBlack white-text"
-                    id="form-dialog-title"
-                  >
-                    Review
-                  </DialogTitle>
-                  <DialogContent className="testBlack white-text">
-                    <DialogContentText className="testBlack white-text">
-                      {name}
-                    </DialogContentText>
-                    <input
-                      className="testBlack white-text"
-                      type="text"
-                      placeholder="Title"
-                      value={title}
-                      onChange={(e) => setTitle(e.target.value)}
-                    />
-                    <textarea
-                      className="testBlack white-text"
-                      className="review-text"
-                      type="text"
-                      rows="5"
-                      cols="60"
-                      placeholder="lets talk about the game"
-                      //onChange={(e) => setRating(e.target.value)}
-                    />
-                    <div
-                      className="testBlack"
-                      style={{
-                        width: 250,
-                      }}
-                    >
-                      <Typography
-                        className="testBlack white-text"
-                        id="input-slider"
-                        gutterBottom
-                      >
-                        Rating
-                      </Typography>
-                      <Grid container spacing={2} alignItems="center">
-                        <Grid item></Grid>
-                        <Grid item xs>
-                          <Slider
-                            style={{ color: "green" }}
-                            min={0}
-                            step={1}
-                            max={10}
-                            value={typeof rating === "number" ? rating : 0}
-                            onChange={handleSliderChange}
-                            valueLabelDisplay="auto"
-                            aria-labelledby="input-slider"
-                          />
-                        </Grid>
-                      </Grid>
-                    </div>
-                  </DialogContent>
-                  <DialogActions className="testBlack white-text">
-                    <Button onClick={handleCloseReview} className="green-text">
-                      close
-                    </Button>
-                    <button
-                      className="waves-effect waves-light btn #1b5e20 green darken-1"
-                      onClick={() => {
-                        PostData();
-                      }}
-                    >
-                      rate
-                    </button>
-                  </DialogActions>
-                </Dialog>
+               
               </DialogActions>
             </Dialog>
           </div>
         </div>
       </div>
-
-  
     </div>
   );
 }
 
-export default Card;
+export default CardFav;

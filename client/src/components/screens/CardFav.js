@@ -15,7 +15,7 @@ import Typography from "@material-ui/core/Typography";
 import Slider from "@material-ui/core/Slider";
 import Input from "@material-ui/core/Input";
 
-function CardDelFav({
+function CardFav({
   id,
   photo,
   name,
@@ -94,6 +94,7 @@ function CardDelFav({
         console.log(err);
       });
   };
+  
 
   return (
     <div className="row ">
@@ -199,4 +200,4 @@ function CardDelFav({
   );
 }
 
-export default CardDelFav;
+export default CardFav;

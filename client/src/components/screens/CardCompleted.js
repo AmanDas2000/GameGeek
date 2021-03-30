@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { Link, useHistory } from "react-router-dom";
 import M from "materialize-css";
@@ -16,7 +15,6 @@ import Typography from "@material-ui/core/Typography";
 import Slider from "@material-ui/core/Slider";
 import Input from "@material-ui/core/Input";
 
-
 function Card({
   id,
   photo,
@@ -32,13 +30,11 @@ function Card({
   const [value, setValue] = React.useState(0);
   const [rating, setRating] = useState(0);
 
-
   const handleSliderChange = (event, newRating) => {
     setRating(newRating);
   };
 
   const handleInputChange = (event) => {
-
     setRating(event.target.value === "" ? "" : Number(event.target.value));
   };
 
@@ -49,11 +45,9 @@ function Card({
       setRating(10);
     }
   };
+  const history = useHistory();
 
-  const history = useHistory()
-  
-  const [title, setTitle] = useState("")
-
+  const [title, setTitle] = useState("");
   const [open, setOpen] = React.useState(false);
   const handleClickOpen = () => {
     setOpen(true);
@@ -128,7 +122,8 @@ function Card({
       });
   };
 
-  const addOnGoing= () => {
+  const deleteCompleted = () => {
+    console.log({ rating });
     fetch("/updatelist", {
       method: "post",
       headers: {
@@ -137,8 +132,8 @@ function Card({
       },
       body: JSON.stringify({
         gameId : id,
-        listType : "Curr",
-        deleteGame : false
+        listType : "Completed",
+        deleteGame : true
       }),
     })
       .then((res) => res.json())
@@ -155,7 +150,6 @@ function Card({
         console.log(err);
       });
   };
-
   return (
     <div className="row ">
       <div className="col s40 m40">
@@ -167,7 +161,6 @@ function Card({
 	         		<p>🔥</p>
 	         	))}
 	        </div>  */}
-
           <div class="card-image waves-effect waves-block waves-light">
             <img
               className="activator"
@@ -245,14 +238,7 @@ function Card({
               </DialogContent>
               <DialogActions className="testBlack white-text">
                 <div class="switch"></div>
-                <button
-                  className="waves-effect waves-light btn #4a148c purple darken-4"
-                  onClick={() => {
-                    addOnGoing();
-                  }}
-                >
-                  Playing
-                </button>
+
                 <button
                   className="waves-effect waves-light btn #1976d2 blue darken-2"
                   onClick={() => {
@@ -268,6 +254,14 @@ function Card({
                   }}
                 >
                   write review
+                </button>
+                <button
+                  className="waves-effect waves-light btn #c62828 red darken-3"
+                  onClick={() => {
+                    deleteCompleted();
+                  }}
+                >
+                  Remove
                 </button>
                 <Dialog
                   disableAutoFocus="false"
@@ -323,7 +317,7 @@ function Card({
                           <Slider
                             style={{ color: "green" }}
                             min={0}
-                            step={1}
+                            step={0.1}
                             max={10}
                             value={typeof rating === "number" ? rating : 0}
                             onChange={handleSliderChange}
@@ -353,8 +347,6 @@ function Card({
           </div>
         </div>
       </div>
-
-  
     </div>
   );
 }

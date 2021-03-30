@@ -46,9 +46,7 @@ function Signin() {
     
      
     return (
-        <div className="mycard" style={{
-            marginBottom:"19rem"
-        }}>
+        <div className="mycard">
             <ParticlesBg color="#1b4332" type="cobweb" bg={true} />
             <div className="card auth-card #212121 grey darken-4">
                 <h2 class="white-text">GameGeek.GG</h2>
