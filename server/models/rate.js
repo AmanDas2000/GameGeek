@@ -14,11 +14,9 @@ const postSchema = new mongoose.Schema({
   review: {
       title : {
           type : String,
-          default : "NA"
       },
       description : {
           type : String,
-          default : "NA"
       }
   },
   postedBy: {

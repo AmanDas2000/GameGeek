@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { Link, useHistory } from "react-router-dom";
 import M from "materialize-css";
@@ -16,7 +15,6 @@ import Typography from "@material-ui/core/Typography";
 import Slider from "@material-ui/core/Slider";
 import Input from "@material-ui/core/Input";
 
-
 function Card({
   id,
   photo,
@@ -29,16 +27,15 @@ function Card({
   date,
   description,
 }) {
+  const [findReview, setFindReview] = useState("");
   const [value, setValue] = React.useState(0);
   const [rating, setRating] = useState(0);
-
 
   const handleSliderChange = (event, newRating) => {
     setRating(newRating);
   };
 
   const handleInputChange = (event) => {
-
     setRating(event.target.value === "" ? "" : Number(event.target.value));
   };
 
@@ -49,11 +46,10 @@ function Card({
       setRating(10);
     }
   };
+  const history = useHistory();
 
-  const history = useHistory()
-  
-  const [title, setTitle] = useState("")
-
+  const [title, setTitle] = useState(null);
+  const [review, setReview] = useState(null);
   const [open, setOpen] = React.useState(false);
   const handleClickOpen = () => {
     setOpen(true);
@@ -82,6 +78,10 @@ function Card({
       },
       body: JSON.stringify({
         id,
+        review: {
+          title: title,
+          description: review,
+        },
         rating: parseInt(rating),
       }),
     })
@@ -92,7 +92,8 @@ function Card({
           M.toast({ html: data.error, classes: "#e57373 red" });
         } else {
           M.toast({ html: data.message, classes: "#43a047 green darken-1" });
-          history.push("/");
+          //history.push("/");
+          window.parent.location.reload();
         }
       })
       .catch((err) => {
@@ -101,6 +102,7 @@ function Card({
   };
  
   const addFav = () => {
+    console.log({ rating });
     fetch("/updatelist", {
       method: "post",
       headers: {
@@ -127,34 +129,30 @@ function Card({
         console.log(err);
       });
   };
-
-  const addOnGoing= () => {
-    fetch("/updatelist", {
-      method: "post",
-      headers: {
-        Authorization: "Bearer " + localStorage.getItem("jwt"),
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        gameId : id,
-        listType : "Curr",
-        deleteGame : false
-      }),
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        console.log(data);
-        if (data.error) {
-          M.toast({ html: data.error, classes: "#e57373 red" });
-        } else {
-          M.toast({ html: data.message, classes: "#43a047 green darken-1" });
-          history.push("/");
-        }
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  };
+  
+    //   useEffect(()=>{
+    //     fetch("/findReview", {
+    //       method: "get",
+    //       headers: {
+    //         "Content-Type": "application/json",
+    //       },
+    //       body: JSON.stringify({
+    //         gameId : id,
+    //       }),
+    //     })
+    //       .then((res) => res.json())
+    //       .then((data) => {
+    //         console.log(data);
+    //         if (data.error) {
+    //           M.toast({ html: data.error, classes: "#e57373 red" });
+    //         } else {
+    //           M.toast({ html: data.message, classes: "#43a047 green darken-1" });
+    //           history.push("/");
+    //         }
+    //       })
+    //       .catch((err) => {
+    //         console.log(err);
+    // },[])
 
   return (
     <div className="row ">
@@ -167,7 +165,6 @@ function Card({
 	         		<p>🔥</p>
 	         	))}
 	        </div>  */}
-
           <div class="card-image waves-effect waves-block waves-light">
             <img
               className="activator"
@@ -246,14 +243,6 @@ function Card({
               <DialogActions className="testBlack white-text">
                 <div class="switch"></div>
                 <button
-                  className="waves-effect waves-light btn #4a148c purple darken-4"
-                  onClick={() => {
-                    addOnGoing();
-                  }}
-                >
-                  Playing
-                </button>
-                <button
                   className="waves-effect waves-light btn #1976d2 blue darken-2"
                   onClick={() => {
                     addFav();
@@ -302,6 +291,8 @@ function Card({
                       rows="5"
                       cols="60"
                       placeholder="lets talk about the game"
+                      value={review}
+                      onChange={(e) => setReview(e.target.value)}
                       //onChange={(e) => setRating(e.target.value)}
                     />
                     <div
@@ -331,8 +322,34 @@ function Card({
                             aria-labelledby="input-slider"
                           />
                         </Grid>
+                        {/* <Grid item >
+           <Input
+            class="white-text"
+            style={{
+                width: 42
+            }}
+            value={rating}
+            margin="dense"
+            onChange={handleInputChange}
+            onBlur={handleBlur}
+            inputProps={{
+              step: 0.1,
+              min: 0,
+              max: 10,
+              type: 'number',
+              'aria-labelledby': 'input-slider',
+            }}
+          />
+        </Grid> */}
                       </Grid>
                     </div>
+                    {/* <input
+                    className="testBlack white-text"
+                    type='text'
+                    placeholder='rate from 1 to 10'
+                    value={rating}
+                    onChange={(e) => setRating(e.target.value)}
+                /> */}
                   </DialogContent>
                   <DialogActions className="testBlack white-text">
                     <Button onClick={handleCloseReview} className="green-text">
@@ -353,8 +370,6 @@ function Card({
           </div>
         </div>
       </div>
-
-  
     </div>
   );
 }
