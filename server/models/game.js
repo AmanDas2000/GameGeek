@@ -41,7 +41,16 @@ const gameSchema =  new mongoose.Schema({
     noOfRating : {
         type : Number,
         default : 0
+    },
+    avgRating: {
+        type: Number,
+        default: function() {
+            if(this.noOfRating==0)
+                return 0;
+            return (this.totalRating/this.noOfRating).toFixed(1);
+        }
     }
 })
 
-mongoose.model("Game",gameSchema)
+gameSchema.index({noOfRating:-1, avgRating:-1});
+mongoose.model("Game",gameSchema);

@@ -16,7 +16,38 @@ router.get("/getFav",requireLogin, (req, res) => {
             listType: "Fav",
             addedBy: req.user._id,
         }).populate("games",
-        "_id name company coverPhoto noOfRating totalRating genre releasedDate platform description")
+        "_id name company coverPhoto noOfRating totalRating genre releaseDate platform description")
+        .then((getlist) => {
+            res.json({
+                getlist
+            });
+        })
+        .catch((err) => {
+            console.log(err);
+        })
+});
+router.get("/getCompleted",requireLogin, (req, res) => {
+    List.findOne({
+            listType: "Completed",
+            addedBy: req.user._id,
+        }).populate("games",
+        "_id name company coverPhoto noOfRating totalRating genre releaseDate platform description")
+        .then((getlist) => {
+            res.json({
+                getlist
+            });
+        })
+        .catch((err) => {
+            console.log(err);
+        })
+});
+
+router.get("/getCurr",requireLogin, (req, res) => {
+    List.findOne({
+            listType: "Curr",
+            addedBy: req.user._id,
+        }).populate("games",
+        "_id name company coverPhoto noOfRating totalRating genre releaseDate platform description")
         .then((getlist) => {
             res.json({
                 getlist
@@ -81,31 +112,32 @@ router.post("/updatelist", requireLogin, async (req, res) => {
                 }
 
             } else {
+                
                 //The user already has a list so we'll append to/remove from it
                 console.log("List found in database");
                 var newList = listData.games;
                 if (deleteGame) {
                     newList = newList.filter(e => e != gameId);
                 } else {
-                    newList.push(gameId);
+                    if(!newList.includes(gameId))
+                        newList.push(gameId);
                 }
-
                 List.findByIdAndUpdate({
-                        _id: listData._id
-                    }, {
-                        games: newList
-                    }, {
-                        new: true
-                    }, (error, updatedList) => {
-                        if (error) console.log(error);
-                        else console.log("Updated List " + updatedList);
-                    })
-                    .then((listResult) => {
-                        res.json({
-                            message: "List updated.",
-                            newList: listResult
-                        });
+                    _id: listData._id
+                }, {
+                    games: newList
+                }, {
+                    new: true
+                }, (error, updatedList) => {
+                    if (error) console.log(error);
+                    else console.log("Updated List " + updatedList);
+                })
+                .then((listResult) => {
+                    res.json({
+                        message: "List updated.",
+                        newList: listResult
                     });
+                });
             }
         }
     });
