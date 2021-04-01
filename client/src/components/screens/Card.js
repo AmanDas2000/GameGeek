@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import Review from './Review.js'
 import { Link, useHistory } from "react-router-dom";
 import M from "materialize-css";
 import Button from "@material-ui/core/Button";
@@ -50,9 +51,11 @@ function Card({
   const history = useHistory();
 
   const [title, setTitle] = useState("");
+  const [review, setReview] = useState("");
   const [open, setOpen] = React.useState(false);
   const handleClickOpen = () => {
     setOpen(true);
+    findReview();
   };
 
   const handleClose = () => {
@@ -78,6 +81,10 @@ function Card({
       },
       body: JSON.stringify({
         id,
+        review: {
+          title: title,
+          description: review,
+        },
         rating: parseInt(rating),
       }),
     })
@@ -88,6 +95,8 @@ function Card({
           M.toast({ html: data.error, classes: "#e57373 red" });
         } else {
           M.toast({ html: data.message, classes: "#43a047 green darken-1" });
+          //history.push("/");
+          window.parent.location.reload();
           history.push("/");
         }
       })
@@ -151,10 +160,29 @@ function Card({
         console.log(err);
       });
   };
+  const[reviewDisplay,setReviewDisplay]=useState([])
+  const findReview=()=>{
+    fetch("/findReview", {
+    method: "post",
+        headers: {
+    "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+      gameId : id,
+    }),
+    
+    }).then(res => res.json())
+    .then(data => {
+    console.log(data.rated)
+    setReviewDisplay(data.rated);
+    }).catch(err => {
+    console.log(err)
+    })
+    }
 
   return (
     <div className="row ">
-      <div className="col s40 m40">
+      <div className="col s30 m30">
         <div className="card sticky-action #212121 grey darken-4">
           {/* <div className="product__rating">
                 {Array(rating)
@@ -221,7 +249,7 @@ function Card({
                   >
                     <p>Genre : {genre?.join(", ")}</p>
                     <p>Platform : {platform?.join(", ")}</p>
-                    <p>Realesed: {formattedDate}</p>
+                    <p>Released: {formattedDate}</p>
                     <p>From : {company?.join(", ")}</p>
                   </div>
                 </div>
@@ -232,11 +260,27 @@ function Card({
                   }}
                 >
                   {description}
+                  
+                  
+                  
+                  <p>Top Reviews:</p>
+                  
+                  {reviewDisplay.length?<div  className="reviewDisplay">
+                  {reviewDisplay?.map(item => (
+                    <div className="reviewDisplay_single">
+                      <Review
+                        title={item.review.title}
+                        rating={item.rating}
+                        description={item.review.description}
+                        firstName={item.postedBy.name.firstName}
+                      />
+                  </div>
+                  ))}
+                  </div>:<p>No reviews</p>}
                 </DialogContentText>
-                <DialogContentText className="game_single testBlack white-text">
-                  <div>review1</div>
-                  <div>review2</div>
-                </DialogContentText>
+                
+                  
+                
               </DialogContent>
               <DialogActions className="testBlack white-text">
                 <div class="switch"></div>
@@ -297,6 +341,8 @@ function Card({
                       rows="5"
                       cols="60"
                       placeholder="lets talk about the game"
+                      value={review}
+                      onChange={(e) => setReview(e.target.value)}
                       //onChange={(e) => setRating(e.target.value)}
                     />
                     <div
@@ -326,6 +372,7 @@ function Card({
                             aria-labelledby="input-slider"
                           />
                         </Grid>
+                        
                       </Grid>
                     </div>
                   </DialogContent>
@@ -353,3 +400,4 @@ function Card({
 }
 
 export default Card;
+

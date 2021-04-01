@@ -7,6 +7,7 @@ const Rate = mongoose.model("Rate");
 const User = mongoose.model("User");
 const Game = mongoose.model("Game");
 
+
 //adding without game id
 /* router.post('/rate',requireLogin,(req,res)=>{
     const {game,rating} = req.body 
@@ -28,7 +29,8 @@ const Game = mongoose.model("Game");
 }) */
 
 router.post("/rate", requireLogin, async (req, res) => {
-  const { id, rating, review } = req.body;
+  var { id, rating, review } = req.body;  
+
   if (!id || !rating) {
     return res.status(422).json({
       error: "Please add all the fields",
@@ -90,10 +92,16 @@ router.post("/rate", requireLogin, async (req, res) => {
                       }
                     }
                   ).then(() => {
+                    if(review.title==null){
+                      checkReview = false
+                    }else{
+                      checkReview=true
+                    }
                     const rate = new Rate({
                       game: game_data._id,
                       rating,
                       review,
+                      ifReview : checkReview,
                       postedBy: req.user._id,
                     });
                     rate
@@ -112,7 +120,11 @@ router.post("/rate", requireLogin, async (req, res) => {
                   console.log("Existing rating found");
 
                   //update rating
-
+                  if(review.title==null){
+                    checkReview = false
+                  }else{
+                    checkReview=true
+                  }
                   var oldRating = data.rating; // this is a rate data
                   Rate.findByIdAndUpdate(
                     {
@@ -121,6 +133,7 @@ router.post("/rate", requireLogin, async (req, res) => {
                     {
                       rating,
                       review,
+                      ifReview : checkReview
                     },
                     {
                       new: true,
@@ -184,22 +197,23 @@ router.get("/allrating", (req, res) => {
     });
 });
 
-router.get("/allreviews", (req, res) => {
-  const { game_id } = req.body;
-  Rate.find({
-    $and: [{ postedBy: req.user._id }, { review: { $exists: true } }],
-  })
-    .populate("game", "_id name company photo noOfRating")
-    .populate("postedBy", "_id name")
-    .then((posts) => {
-      res.json({
-        posts,
-      });
-    })
-    .catch((err) => {
-      console.log(err);
-    });
-});
+// router.get("/allreviews", (req, res) => {
+//   const { gameId } = req.body;
+//   Rate.find({
+//     review: { title:  }, 
+//     game: { _id: gameId }
+//   })
+//     .populate("rate", "_id rating review")
+//     .populate("postedBy", "_id name")
+//     .then((posts) => {
+//       res.json({
+//         posts,
+//       });
+//     })
+//     .catch((err) => {
+//       console.log(err);
+//     });
+// });
 //user reviews
 router.get("/useReview", requireLogin, (req, res) => {
   Rate.find({
@@ -235,14 +249,36 @@ router.get("/userrated", requireLogin, (req, res) => {
     });
 });
 
+router.post("/findReview", (req, res) => {
+  
+  const { gameId } = req.body;
+  if (!gameId) {
+    return res.json({ message: "Provide game Id" });
+  }
+  Rate.find({game:{_id:gameId},ifReview : true},null
+  )
+    .populate("rate",
+      "_id rating review")
+      .populate("postedBy",
+      "_id name") //gives the whole object
+    .then((rated) => {
+      res.json({
+        rated,
+      });
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+});
+
 //delete game rating
 router.post("/deleteRate", requireLogin, (req, res) => {
-  const { game_id } = req.body;
-  if (!game_id) {
+  const { gameId } = req.body;
+  if (!gameId) {
     return res.json({ message: "Provide game Id" });
   }
   Rate.findOneAndDelete(
-    { game: { _id: game_id }, postedBy: { _id: req.user._id } },
+    { game: { _id: gameId }, postedBy: { _id: req.user._id } },
     (error, deletedRate) => {
       if (error) console.log(error);
       else {

@@ -15,7 +15,7 @@ import Typography from "@material-ui/core/Typography";
 import Slider from "@material-ui/core/Slider";
 import Input from "@material-ui/core/Input";
 
-function CardFav({
+function CardCurr({
   id,
   photo,
   name,
@@ -196,7 +196,7 @@ function CardFav({
                   >
                     <p>Genre : {genre.join(", ")}</p>
                     <p>Platform : {platform?.join(", ")}</p>
-                    <p>Realesed: {formattedDate}</p>
+                    <p>Released: {formattedDate}</p>
                     <p>From : {company?.join(", ")}</p>
                   </div>
                 </div>
@@ -208,10 +208,7 @@ function CardFav({
                 >
                   {description}
                 </DialogContentText>
-                <DialogContentText className="game_single testBlack white-text">
-                  <div>review1</div>
-                  <div>review2</div>
-                </DialogContentText>
+                
               </DialogContent>
               <DialogActions className="testBlack white-text ">
                 <div class="switch"></div>
@@ -237,4 +234,4 @@ function CardFav({
   );
 }
 
-export default CardFav;
+export default CardCurr;
