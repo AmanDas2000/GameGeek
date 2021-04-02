@@ -1,3 +1,4 @@
+
 import React, { useState } from "react";
 import { Link, useHistory } from "react-router-dom";
 import M from "materialize-css";
@@ -14,6 +15,7 @@ import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 import Slider from "@material-ui/core/Slider";
 import Input from "@material-ui/core/Input";
+
 
 function Card({
   id,
@@ -32,11 +34,13 @@ function Card({
   var date = new Date(releaseDate);
   var formattedDate = date.getDate()+"/"+(date.getMonth()+1)+"/"+date.getFullYear();
 
+
   const handleSliderChange = (event, newRating) => {
     setRating(newRating);
   };
 
   const handleInputChange = (event) => {
+
     setRating(event.target.value === "" ? "" : Number(event.target.value));
   };
 
@@ -47,10 +51,13 @@ function Card({
       setRating(10);
     }
   };
-  const history = useHistory();
 
   const [title, setTitle] = useState("");
   const [review, setReview] = useState("");
+  const history = useHistory()
+  
+
+
   const [open, setOpen] = React.useState(false);
   const handleClickOpen = () => {
     setOpen(true);
@@ -170,6 +177,7 @@ function Card({
 	         		<p>🔥</p>
 	         	))}
 	        </div>  */}
+
           <div class="card-image waves-effect waves-block waves-light">
             <img
               className="activator"
@@ -358,6 +366,8 @@ function Card({
           </div>
         </div>
       </div>
+
+  
     </div>
   );
 }
