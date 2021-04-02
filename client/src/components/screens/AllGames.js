@@ -4,7 +4,7 @@ import ParticlesBg from 'particles-bg'
 import { Link, useHistory } from 'react-router-dom'
 import Modal from 'react-bootstrap/Modal'
 
-function Home() {
+function AllGames() {
     const [show, setShow] = useState(false);
     const [games, setGames] = useState([]);
     const [open, setOpen] = React.useState("");
@@ -33,21 +33,23 @@ function Home() {
     
     
     return (
-        <div>
+        <div >
             
-            
+            <div className="white-text ">
             <input
-                    class="white-text"
-                    type='text'
-                    placeholder='text'
-                    value={open}
-                    onChange={(e)=>setOpen(e.target.value)}
-      />
-            <button
-                className="waves-effect waves-light btn #1976d2 blue darken-2"
-                onClick={() => { window.find(open) }}>
-        find
-      </button>
+                
+                className="white-text searchBox"
+                type='text'
+                placeholder='search'
+                value={open}
+                onChange={(e)=>setOpen(e.target.value)}
+  />
+        <button
+            className="waves-effect waves-light btn #1976d2 blue darken-2"
+            onClick={() => { window.find(open) }}>
+    🔍
+  </button>
+            </div>
  
            <div className="games">
             {/* <ParticlesBg color="#1b4332" type="cobweb" bg={true} /> */}
@@ -75,4 +77,4 @@ function Home() {
     )
 }
 
-export default Home
+export default AllGames

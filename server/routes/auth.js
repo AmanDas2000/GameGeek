@@ -99,8 +99,9 @@ router.post("/signin", (req, res) => {
          const firstName = savedUser.name.firstName
          const lastName = savedUser.name.lastName
          const  dateOfBirth = savedUser.dateOfBirth
+         const ign = savedUser.ign
          
-          res.json({ token, user: { _id, email,firstName,lastName,dateOfBirth } });
+          res.json({ token, user: { _id, email,firstName,lastName,dateOfBirth,ign } });
         } else {
           return res.status(422).json({ error: "Invalid Email or password" });
         }

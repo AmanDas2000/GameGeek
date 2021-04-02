@@ -9,8 +9,11 @@ function Navbar() {
     if (state) {
       return [
         <li><Link className="link" to="/">Home</Link></li>,
-        <li><Link className="link" to="/review">testing</Link></li>,
-        <li><Link className="link" to="/mylist">{ state.firstName}'s List</Link></li>,
+        <li><Link className="link" to="/allGames">All Games</Link></li>,
+        <li><Link className="link" to="/mylist"><img //class="dp"
+        style={{ width: "50px", height: "50px", borderRadius: "15px", margin:""}}
+        src={state?.photo,`https://robohash.org/${state?.firstName}?size=200x200`}
+        />{state.firstName}'s List</Link></li>,
         <li>{console.log(state)}
              <button className="logout waves-effect waves-light #c62828 red darken-3 btn-small"
             onClick={()=>{

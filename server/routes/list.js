@@ -16,7 +16,7 @@ router.get("/getFav",requireLogin, (req, res) => {
             listType: "Fav",
             addedBy: req.user._id,
         }).populate("games",
-        "_id name company coverPhoto noOfRating totalRating genre releasedDate platform description")
+        "_id name company coverPhoto noOfRating totalRating genre releaseDate platform description")
         .then((getlist) => {
             res.json({
                 getlist
@@ -31,7 +31,7 @@ router.get("/getCompleted",requireLogin, (req, res) => {
             listType: "Completed",
             addedBy: req.user._id,
         }).populate("games",
-        "_id name company coverPhoto noOfRating totalRating genre releasedDate platform description")
+        "_id name company coverPhoto noOfRating totalRating genre releaseDate platform description")
         .then((getlist) => {
             res.json({
                 getlist
@@ -47,7 +47,7 @@ router.get("/getCurr",requireLogin, (req, res) => {
             listType: "Curr",
             addedBy: req.user._id,
         }).populate("games",
-        "_id name company coverPhoto noOfRating totalRating genre releasedDate platform description")
+        "_id name company coverPhoto noOfRating totalRating genre releaseDate platform description")
         .then((getlist) => {
             res.json({
                 getlist
@@ -119,7 +119,8 @@ router.post("/updatelist", requireLogin, async (req, res) => {
                 if (deleteGame) {
                     newList = newList.filter(e => e != gameId);
                 } else {
-                    newList.push(gameId);
+                    if(!newList.includes(gameId))
+                        newList.push(gameId);
                 }
                 List.findByIdAndUpdate({
                     _id: listData._id

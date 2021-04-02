@@ -1,5 +1,6 @@
 import React ,{ useState,useEffect,useContext  } from 'react'
 import Card from './Card.js'
+import CardDelFav from './CardDelFav'
 import CardFav from './CardFav'
 import CardCurr from './CardCurr'
 import CardCompleted from './CardCompleted'
@@ -165,7 +166,7 @@ function MyList() {
                 </div>
                 <div class="white-text">
                     
-                    <h4>{ state?.firstName} { state?.lastName}</h4>
+                    <h4>{ state?.firstName} {state?.ign} { state?.lastName}</h4>
                     
                     <div style={{
                         display: "flex",
@@ -194,7 +195,7 @@ function MyList() {
           <Tab label="Favourites" {...a11yProps(0)} />
           <Tab label="On going" {...a11yProps(1)} />
           <Tab label="Completed" {...a11yProps(2)} />
-          <Tab label="user rated" {...a11yProps(3)} />
+          <Tab label="User Rated" {...a11yProps(3)} />
         </Tabs>
       </AppBar>
       <TabPanel value={value} index={0}>
@@ -208,7 +209,7 @@ function MyList() {
                         oldrating={rate(item.totalRating, item.noOfRating)}
                         genre={item.genre} company={item.company}
                         number={item.noOfRating} platform={item.platform}
-                        date={item.releaseDate}
+                        releaseDate={item.releaseDate}
                         description={item.description}
                     />
 
@@ -227,7 +228,7 @@ function MyList() {
                         oldrating={rate(item.totalRating, item.noOfRating)}
                         genre={item.genre} company={item.company}
                         number={item.noOfRating} platform={item.platform}
-                        date={item.releaseDate}
+                        releaseDate={item.releaseDate}
                         description={item.description}
                     />
 
@@ -245,7 +246,7 @@ function MyList() {
                         oldrating={rate(item.totalRating, item.noOfRating)}
                         genre={item.genre} company={item.company}
                         number={item.noOfRating} platform={item.platform}
-                        date={item.releaseDate}
+                        releaseDate={item.releaseDate}
                         description={item.description}
                     />
 
@@ -264,7 +265,7 @@ function MyList() {
                         oldrating={rate(item.game.totalRating, item.game.noOfRating)}
                         genre={item.game.genre} company={item.game.company}
                         number={item.game.noOfRating} platform={item.game.platform}
-                        date={item.game.releaseDate}
+                        releaseDate={item.game.releaseDate}
                         description={item.game.description}
                     />
 

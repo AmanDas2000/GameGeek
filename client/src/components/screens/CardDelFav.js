@@ -87,7 +87,8 @@ function CardDelFav({
           M.toast({ html: data.error, classes: "#e57373 red" });
         } else {
           M.toast({ html: data.message, classes: "#43a047 green darken-1" });
-          history.push("/");
+            history.push("/MyList");
+            window.parent.location.reload();
         }
       })
       .catch((err) => {
@@ -184,10 +185,10 @@ function CardDelFav({
               <DialogActions className="testBlack white-text ">
                 <div class="switch"></div>
                 <button
-                  className="waves-effect waves-light btn #c62828 red darken-3 "
+                  className="waves-effect waves-light btn #c62828 red darken-3"
                   onClick={()=>{deleteFav()}}
                 >
-                  Remove
+                  Remove from favourites
                 </button>
                
               </DialogActions>

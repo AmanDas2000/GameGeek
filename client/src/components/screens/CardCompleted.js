@@ -24,11 +24,14 @@ function Card({
   company,
   platform,
   number,
-  date,
+  releaseDate,
   description,
 }) {
   const [value, setValue] = React.useState(0);
   const [rating, setRating] = useState(0);
+
+  var date = new Date(releaseDate);
+  var formattedDate = date.getDate()+"/"+(date.getMonth()+1)+"/"+date.getFullYear();
 
   const handleSliderChange = (event, newRating) => {
     setRating(newRating);
@@ -217,9 +220,9 @@ function Card({
                       margin: "20px 20px",
                     }}
                   >
-                    <p>Genre : {genre}</p>
+                    <p>Genre : {genre.join(", ")}</p>
                     <p>Platform : {platform?.join(", ")}</p>
-                    <p>Realesed: date</p>
+                    <p>Realesed: {formattedDate}</p>
                     <p>From : {company?.join(", ")}</p>
                   </div>
                 </div>

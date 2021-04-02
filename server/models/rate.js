@@ -14,12 +14,14 @@ const postSchema = new mongoose.Schema({
   review: {
       title : {
           type : String,
-          default : "NA"
       },
       description : {
           type : String,
-          default : "NA"
-      }
+      },
+  },
+  ifReview : {
+    type : Boolean,
+    default : false
   },
   postedBy: {
     type: ObjectId,

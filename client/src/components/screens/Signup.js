@@ -11,6 +11,7 @@ function Signup() {
     const [dateOfBirth,setDateOfBirth] = useState("")
     const [password,setPassword] = useState("")
     const [email, setEmail] = useState("")
+    const [ign, setIgn] = useState("")
     const PostData = () => {
         if (!/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(email)) {
             M.toast({ html: "invalid email", classes: "#e57373 red" })
@@ -30,7 +31,8 @@ function Signup() {
                lastName,
                email,
                password,
-               dateOfBirth
+               dateOfBirth,
+               ign
             })
         }).then(res => res.json())
                 .then(data => {
@@ -47,7 +49,9 @@ function Signup() {
         }
 
     return (
-        <div className="mycard">
+        <div className="mycard" style={{
+            marginBottom:"18rem"
+        }}>
             <ParticlesBg color="#1b4332" type="cobweb" bg={true} />
             <div className="card auth-card #212121 grey darken-4">
                 <h2 class="white-text">GameGeek.GG</h2>
@@ -65,6 +69,21 @@ function Signup() {
                     placeholder='Last Name'
                     value={lastName}
                     onChange={(e)=>setLastName(e.target.value)}
+                />
+                </div>
+                <div style={{display : "flex"}}>
+                <p 
+                class="white-text"
+                style={{margin:"6px 2px 2px 0px"}}>
+                    <h6>IGN</h6>
+                </p>
+                <input
+                    class="white-text"
+                    type='text'
+                    style ={{margin:"0px 0px 0px 8px"}}
+                    placeholder='n00b'
+                    value={ign}
+                    onChange={(e)=>setIgn(e.target.value)}
                 />
                 </div>
                 <div style={{display : "flex"}}>

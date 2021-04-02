@@ -15,7 +15,7 @@ import Typography from "@material-ui/core/Typography";
 import Slider from "@material-ui/core/Slider";
 import Input from "@material-ui/core/Input";
 
-function Card({
+function CardHome({
   id,
   photo,
   name,
@@ -49,8 +49,8 @@ function Card({
   };
   const history = useHistory();
 
-  const [title, setTitle] = useState("");
-  const [review, setReview] = useState("");
+  const [title, setTitle] = useState(null);
+  const [review, setReview] = useState(null);
   const [open, setOpen] = React.useState(false);
   const handleClickOpen = () => {
     setOpen(true);
@@ -162,7 +162,7 @@ function Card({
   return (
     <div className="row ">
       <div className="col s30 m30">
-        <div className="card sticky-action #212121 grey darken-4">
+        <div className="card horizontalCard sticky-action #212121 grey darken-4">
           {/* <div className="product__rating">
                 {Array(rating)
 	         	.fill()
@@ -362,5 +362,5 @@ function Card({
   );
 }
 
-export default Card;
+export default CardHome;
 
