@@ -249,18 +249,16 @@ router.get("/userrated", requireLogin, (req, res) => {
     });
 });
 
-router.post("/findReview", (req, res) => {
+router.get("/findReview", (req, res) => {
   
   const { gameId } = req.body;
   if (!gameId) {
     return res.json({ message: "Provide game Id" });
   }
-  Rate.find({game:{_id:gameId},ifReview : true},null
+  Rate.find({game:{_id:gameId},ifReview : true},null,{limit : 2}
   )
     .populate("rate",
-      "_id rating review")
-      .populate("postedBy",
-      "_id name") //gives the whole object
+      "_id rating review") //no idea what this does
     .then((rated) => {
       res.json({
         rated,

@@ -86,6 +86,32 @@ function Home() {
             
             
             {rated?.map(item => (
+                <div >
+                    <CardHome id={item._id}
+                        photo={item.coverPhoto}
+                        name={item.name}
+                        oldrating={rate(item.totalRating, item.noOfRating)}
+                        genre={item.genre} company={item.company}
+                        number={item.noOfRating} platform={item.platform}
+                        releaseDate={item.releaseDate}
+                        description={item.description}
+                    />
+
+                </div>
+                ))}
+        </div>
+        <div>
+          <h4
+            style={{
+            margin:"-30px 0px 0px 30px"
+          }}
+            class="white-text">Highest Rated</h4>
+            </div>
+        <div className="gamesPopular">
+            {/* <ParticlesBg color="#1b4332" type="cobweb" bg={true} /> */}
+            
+            
+            {rated?.map(item => (
                 <div>
                     <CardHome id={item._id}
                         photo={item.coverPhoto}
