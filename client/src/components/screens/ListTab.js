@@ -1,78 +1,83 @@
-import React,{ useState,useEffect  } from 'react'
-import Card from './Card.js'
-import ParticlesBg from 'particles-bg'
-import { Link, useHistory } from 'react-router-dom'
-import Modal from 'react-bootstrap/Modal'
+import React from 'react';
+import PropTypes from 'prop-types';
+import { makeStyles } from '@material-ui/core/styles';
+import AppBar from '@material-ui/core/AppBar';
+import Tabs from '@material-ui/core/Tabs';
+import Tab from '@material-ui/core/Tab';
+import Typography from '@material-ui/core/Typography';
+import Box from '@material-ui/core/Box';
+import Accordian from './Accordian.js'
 
-function Home() {
-    const [show, setShow] = useState(false);
-    const [games, setGames] = useState([]);
-    const [open, setOpen] = React.useState("");
-    
-    useEffect(()=>{
-        fetch("/allgames", {
-            method: "get",
+function TabPanel(props) {
+  const { children, value, index, ...other } = props;
 
-        }).then(res => res.json())
-                .then(data => {
-                    //console.log(data)
-                    setGames(data.games);
-                }).catch(err => {
-                    console.log(err)
-                })
-    },[])
-        
-    console.log(games);
-    const rate = (a, b) => {
-        if (b === 0) {
-            return 0;
-        }
-        return (a/b).toFixed(1);
-    }
-    
-    
-    
-    return (
-        <div>
-            
-            
-            <input
-                    class="white-text"
-                    type='text'
-                    placeholder='text'
-                    value={open}
-                    onChange={(e)=>setOpen(e.target.value)}
-      />
-            <button
-                className="waves-effect waves-light btn #1976d2 blue darken-2"
-                onClick={() => { window.find(open) }}>
-        find
-      </button>
- 
-           <div className="games">
-            {/* <ParticlesBg color="#1b4332" type="cobweb" bg={true} /> */}
-            
-            
-            {games?.map(item => (
-                <div >
-                    <Card id={item._id}
-                        photo={item.coverPhoto}
-                        name={item.name}
-                        oldrating={rate(item.totalRating, item.noOfRating)}
-                        genre={item.genre} company={item.company}
-                        number={item.noOfRating} platform={item.platform}
-                        releaseDate={item.releaseDate}
-                        description={item.description}
-                    />
-
-                </div>
-                ))}
-         </div>
-        </div>
-        
-        
-
-    )
+  return (
+    <div
+      role="tabpanel"
+      hidden={value !== index}
+      id={`simple-tabpanel-${index}`}
+      aria-labelledby={`simple-tab-${index}`}
+      {...other}
+    >
+      {value === index && (
+        <Box p={3}>
+          <Typography>{children}</Typography>
+        </Box>
+      )}
+    </div>
+  );
 }
 
-export default Home
+TabPanel.propTypes = {
+  children: PropTypes.node,
+  index: PropTypes.any.isRequired,
+  value: PropTypes.any.isRequired,
+};
+
+function a11yProps(index) {
+  return {
+    id: `simple-tab-${index}`,
+    'aria-controls': `simple-tabpanel-${index}`,
+  };
+}
+
+const useStyles = makeStyles((theme) => ({
+  root: {
+    flexGrow: 1,
+    backgroundColor: theme.palette.background.paper,
+  },
+}));
+
+export default function ListTab() {
+  const classes = useStyles();
+  const [value, setValue] = React.useState(0);
+
+  const handleChange = (event, newValue) => {
+    setValue(newValue);
+  };
+    
+    let x = "PC";
+    let y = "XBOX";
+    let z = "PS5";
+
+  return (
+    <div className={classes.root}>
+      <AppBar position="static">
+        <Tabs value={value} onChange={handleChange} aria-label="simple tabs example">
+          <Tab label="Item One" {...a11yProps(0)} />
+          <Tab label="Item Two" {...a11yProps(1)} />
+          <Tab label="Item Three" {...a11yProps(2)} />
+        </Tabs>
+      </AppBar>
+      <TabPanel value={value} index={0}>
+              <Accordian platform={x }/>
+      </TabPanel>
+      <TabPanel value={value} index={1}>
+        honey
+      </TabPanel>
+      <TabPanel value={value} index={2}>
+        bunny
+      </TabPanel>
+    </div>
+  );
+}

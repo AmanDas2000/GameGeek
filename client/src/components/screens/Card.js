@@ -52,10 +52,6 @@ function Card({
 
   const [title, setTitle] = useState("");
   const [review, setReview] = useState("");
-  const history = useHistory()
-  
-
-
   const [open, setOpen] = React.useState(false);
   const handleClickOpen = () => {
     setOpen(true);

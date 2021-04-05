@@ -71,7 +71,7 @@ function Signin() {
                     Sign in
                 </button>
                 <h5>
-                    <Link to="/signup">Don't have an account?</Link>
+                    <Link to="/signup">Dont have an account?</Link>
                 </h5>
             </div>
         </div>

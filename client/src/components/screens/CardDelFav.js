@@ -177,10 +177,7 @@ function CardDelFav({
                 >
                   {description}
                 </DialogContentText>
-                <DialogContentText className="game_single testBlack white-text">
-                  <div>review1</div>
-                  <div>review2</div>
-                </DialogContentText>
+                
               </DialogContent>
               <DialogActions className="testBlack white-text ">
                 <div class="switch"></div>
