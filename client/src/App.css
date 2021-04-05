@@ -102,17 +102,23 @@ background: radial-gradient(circle, rgba(55,55,56,1) 0%, rgba(0,0,0,1) 100%);
   border:1px solid var(--color);
 }
 
+<<<<<<< HEAD
 /* .MuiAccordionDetails-root {
   background-color: black;
 } */
 .accordion-gaps {
   margin: 15px auto!important;
+=======
+h4{
+  font-family: 'Roboto Condensed', sans-serif;
+>>>>>>> 6b1295fbce7dfd0e10a104b9a1afa5404eb6afbe
 }
 
 h4{
   font-family: 'Roboto Condensed', sans-serif;
 }
 
+<<<<<<< HEAD
 .halloffame {
   font-family: 'Roboto Condensed', sans-serif;
   font-size:2.25rem;
@@ -141,6 +147,27 @@ h4{
     margin-right: 25px;
 }
 
+=======
+.horizontalCard{
+  min-width: 200px;
+}
+.searchBox{
+  max-width: 400px;
+}
+
+
+.gamesPopular{
+  display: flex;
+  overflow-y:hidden;
+  overflow-x: scroll;
+  padding: 20px;
+  width: 100%;
+    object-fit: contain;
+    max-height: 550px;
+    margin-right: 25px;
+}
+
+>>>>>>> 6b1295fbce7dfd0e10a104b9a1afa5404eb6afbe
 .gamesPopular::-webkit-scrollbar{
   display: none;
 }
@@ -176,6 +203,7 @@ height: 160px;
   grid-template-columns: repeat(2, auto);
 }
 
+<<<<<<< HEAD
 .accordion{
   font-family: 'Roboto Condensed', sans-serif;
   margin: 20px auto !important;
@@ -235,6 +263,8 @@ height: 160px;
   box-shadow: 0px 0px 1px white;
 }
 
+=======
+>>>>>>> 6b1295fbce7dfd0e10a104b9a1afa5404eb6afbe
 @media only screen and (max-width : 1366px) {
   .games{
     display:grid;

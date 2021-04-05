@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import Review from './Review.js'
 import { Link, useHistory } from "react-router-dom";
 import M from "materialize-css";
 import Button from "@material-ui/core/Button";
@@ -54,7 +53,6 @@ function CardHome({
   const [review, setReview] = useState(null);
   const [open, setOpen] = React.useState(false);
   const handleClickOpen = () => {
-    findReview();
     setOpen(true);
   };
 
@@ -161,26 +159,6 @@ function CardHome({
       });
   };
 
-  const[reviewDisplay,setReviewDisplay]=useState([])
-  const findReview=()=>{
-    fetch("/findReview", {
-    method: "post",
-        headers: {
-    "Content-Type": "application/json"
-    },
-    body: JSON.stringify({
-      gameId : id,
-    }),
-    
-    }).then(res => res.json())
-    .then(data => {
-    console.log(data.rated)
-    setReviewDisplay(data.rated);
-    }).catch(err => {
-    console.log(err)
-    })
-    }
-
   return (
     <div className="row ">
       <div className="col s30 m30">
@@ -250,7 +228,7 @@ function CardHome({
                   >
                     <p>Genre : {genre?.join(", ")}</p>
                     <p>Platform : {platform?.join(", ")}</p>
-                    <p>Released: {formattedDate}</p>
+                    <p>Realesed: {formattedDate}</p>
                     <p>From : {company?.join(", ")}</p>
                   </div>
                 </div>
@@ -261,22 +239,11 @@ function CardHome({
                   }}
                 >
                   {description}
-                  <p>Top Reviews:</p>
-                  
-                  {reviewDisplay.length?<div  className="reviewDisplay">
-                  {reviewDisplay?.map(item => (
-                    <div className="reviewDisplay_single">
-                      <Review
-                        title={item.review.title}
-                        rating={item.rating}
-                        description={item.review.description}
-                        firstName={item.postedBy.name.firstName}
-                      />
-                  </div>
-                  ))}
-                  </div>:<p>No reviews</p>}
                 </DialogContentText>
-                
+                <DialogContentText className="game_single testBlack white-text">
+                  <div>review1</div>
+                  <div>review2</div>
+                </DialogContentText>
               </DialogContent>
               <DialogActions className="testBlack white-text">
                 <div class="switch"></div>

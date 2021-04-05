@@ -52,6 +52,10 @@ function Card({
 
   const [title, setTitle] = useState("");
   const [review, setReview] = useState("");
+  const history = useHistory()
+  
+
+
   const [open, setOpen] = React.useState(false);
   const handleClickOpen = () => {
     setOpen(true);
@@ -249,7 +253,7 @@ function Card({
                   >
                     <p>Genre : {genre?.join(", ")}</p>
                     <p>Platform : {platform?.join(", ")}</p>
-                    <p>Released: {formattedDate}</p>
+                    <p>Realesed: {formattedDate}</p>
                     <p>From : {company?.join(", ")}</p>
                   </div>
                 </div>

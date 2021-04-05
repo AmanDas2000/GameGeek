@@ -1,5 +1,6 @@
 import React ,{ useState,useEffect,useContext  } from 'react'
 import Card from './Card.js'
+import CardDelFav from './CardDelFav'
 import CardFav from './CardFav'
 import CardCurr from './CardCurr'
 import CardCompleted from './CardCompleted'

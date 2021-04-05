@@ -15,7 +15,7 @@ import Typography from "@material-ui/core/Typography";
 import Slider from "@material-ui/core/Slider";
 import Input from "@material-ui/core/Input";
 
-function CardCurr({
+function CardDelFav({
   id,
   photo,
   name,
@@ -24,14 +24,12 @@ function CardCurr({
   company,
   platform,
   number,
-  releaseDate,
+  date,
   description,
 }) {
   const [value, setValue] = React.useState(0);
   const [rating, setRating] = useState(0);
 
-  var date = new Date(releaseDate);
-  var formattedDate = date.getDate()+"/"+(date.getMonth()+1)+"/"+date.getFullYear();
   const handleSliderChange = (event, newRating) => {
     setRating(newRating);
   };
@@ -68,7 +66,7 @@ function CardCurr({
     setOpenReview(false);
   };
 
-  const deleteCurr = () => {
+  const deleteFav = () => {
     console.log({ rating });
     fetch("/updatelist", {
       method: "post",
@@ -78,7 +76,7 @@ function CardCurr({
       },
       body: JSON.stringify({
         gameId : id,
-        listType : "Curr",
+        listType : "Fav",
         deleteGame : true
       }),
     })
@@ -89,39 +87,10 @@ function CardCurr({
           M.toast({ html: data.error, classes: "#e57373 red" });
         } else {
           M.toast({ html: data.message, classes: "#43a047 green darken-1" });
-          history.push("/");
+            history.push("/MyList");
+            window.parent.location.reload();
         }
       })
-      .catch((err) => {
-        console.log(err);
-      });
-  };
-  
-  const addCompleted = () => {
-    console.log({ rating });
-    fetch("/updatelist", {
-      method: "post",
-      headers: {
-        Authorization: "Bearer " + localStorage.getItem("jwt"),
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        gameId : id,
-        listType : "Completed",
-        deleteGame : false
-      }),
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        console.log(data);
-        if (data.error) {
-          M.toast({ html: data.error, classes: "#e57373 red" });
-        } else {
-          M.toast({ html: data.message, classes: "#43a047 green darken-1" });
-          history.push("/");
-        }
-      })
-      .then(()=>{deleteCurr()})
       .catch((err) => {
         console.log(err);
       });
@@ -194,9 +163,9 @@ function CardCurr({
                       margin: "20px 20px",
                     }}
                   >
-                    <p>Genre : {genre.join(", ")}</p>
+                    <p>Genre : {genre}</p>
                     <p>Platform : {platform?.join(", ")}</p>
-                    <p>Realesed: {formattedDate}</p>
+                    <p>Realesed: date</p>
                     <p>From : {company?.join(", ")}</p>
                   </div>
                 </div>
@@ -208,21 +177,18 @@ function CardCurr({
                 >
                   {description}
                 </DialogContentText>
-                
+                <DialogContentText className="game_single testBlack white-text">
+                  <div>review1</div>
+                  <div>review2</div>
+                </DialogContentText>
               </DialogContent>
               <DialogActions className="testBlack white-text ">
                 <div class="switch"></div>
                 <button
-                  className="waves-effect waves-light btn #c62828 red darken-3 "
-                  onClick={()=>{addCompleted()}}
+                  className="waves-effect waves-light btn #c62828 red darken-3"
+                  onClick={()=>{deleteFav()}}
                 >
-                  Completed
-                </button>
-                <button
-                  className="waves-effect waves-light btn #c62828 red darken-3 "
-                  onClick={()=>{deleteCurr()}}
-                >
-                  Remove
+                  Remove from favourites
                 </button>
                
               </DialogActions>
@@ -234,4 +200,4 @@ function CardCurr({
   );
 }
 
-export default CardCurr;
+export default CardDelFav;
