@@ -6,7 +6,6 @@ import CardCompleted from './CardCompleted'
 import ParticlesBg from 'particles-bg'
 import {UserContext} from '../../App'
 import {Link,useHistory} from 'react-router-dom'
-import SimpleTabs from './ListTab.js'
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
@@ -165,7 +164,7 @@ function MyList() {
                 </div>
                 <div class="white-text">
                     
-                    <h4>{ state?.firstName} { state?.lastName}</h4>
+                    <h4>{ state?.firstName} {state?.ign} { state?.lastName}</h4>
                     
                     <div style={{
                         display: "flex",

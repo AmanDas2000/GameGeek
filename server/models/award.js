@@ -12,6 +12,10 @@ const awardSchema = new mongoose.Schema({
     category:{
         type : String,
         required: true
+    },
+    platform: {
+        type: String, 
+        required: true
     }
 
 })

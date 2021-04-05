@@ -1,7 +1,7 @@
 const mongoose = require('mongoose')
 
 const userSchema = new mongoose.Schema({
-    IGN: {
+    ign: {
         type: String,
         default: "n00b"
     },
@@ -16,7 +16,6 @@ const userSchema = new mongoose.Schema({
     },
     dateOfBirth: {
         type: Date,
-        required: true
     },
     email: {
         type: String,
