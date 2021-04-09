@@ -249,7 +249,7 @@ function Card({
                   >
                     <p>Genre : {genre?.join(", ")}</p>
                     <p>Platform : {platform?.join(", ")}</p>
-                    <p>Realesed: {formattedDate}</p>
+                    <p>Released: {formattedDate}</p>
                     <p>From : {company?.join(", ")}</p>
                   </div>
                 </div>

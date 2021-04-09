@@ -86,7 +86,7 @@ function Home() {
             
             
             {rated?.map(item => (
-                <div >
+                <div>
                     <CardHome id={item._id}
                         photo={item.coverPhoto}
                         name={item.name}
@@ -98,7 +98,7 @@ function Home() {
                     />
 
                 </div>
-                ))}
+            ))}
          </div>
         </div>
         

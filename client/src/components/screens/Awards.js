@@ -48,17 +48,14 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function ListTab() {
+function Awards() {
   const classes = useStyles();
   const [value, setValue] = React.useState(0);
-  const [allAwards,setAllAwards] = React.useState([]);
   const [PCAwards, setPCAwards] = React.useState([]);
   const [PSAwards, setPSAwards] = React.useState([]);
   const [XboxAwards, setXboxAwards] = React.useState([]);
   const [NintendoAwards, setNintendoAwards] = React.useState([]);
   
-
-  const categories = ["Shooter","RPG","Racing","Multiplayer","Platformer","Strategy"];
 
   useEffect(()=>{
       fetch("/findAwardsByPlatform", {
@@ -130,8 +127,8 @@ useEffect(()=>{
     
 
   return (
-    <div>
-      <AppBar position="static" className="accordion">
+    <div className="accordion">
+      <AppBar position="static">
         <Tabs centered
         className = "testBlack" 
         value={value} 
@@ -144,33 +141,27 @@ useEffect(()=>{
         </Tabs>
       </AppBar>
         <TabPanel value={value} index={0}>
-          <div className="accordion">
-            <AwardsAccordion
-              awards={PCAwards}
-            />
-          </div>
+          <AwardsAccordion
+            awards={PCAwards}
+          />
         </TabPanel>
         <TabPanel value={value} index={1}>
-          <div className="accordion">
-              <AwardsAccordion
-                awards={PCAwards}
-              />
-          </div>
+          <AwardsAccordion 
+            awards={PSAwards}
+          />
         </TabPanel>
         <TabPanel value={value} index={2}>
-          <div className="accordion">
-            <AwardsAccordion
-              awards={PCAwards}
-            />
-          </div>
+          <AwardsAccordion 
+            awards={XboxAwards}
+          />
         </TabPanel>
         <TabPanel value={value} index={3}>
-          <div className="accordion">
-            <AwardsAccordion
-              awards={PCAwards}
-            />
-          </div>
+          <AwardsAccordion 
+            awards={NintendoAwards}
+          />
         </TabPanel>
     </div>
   );
 }
+
+export default Awards;
