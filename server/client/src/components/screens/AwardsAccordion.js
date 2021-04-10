@@ -6,7 +6,6 @@ import Accordion from '@material-ui/core/Accordion';
 import AccordionDetails from '@material-ui/core/AccordionDetails';
 import AccordionSummary from '@material-ui/core/AccordionSummary';
 import Typography from '@material-ui/core/Typography';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 
   function getFormattedDate(BSONdate){
     var date = new Date(BSONdate);
@@ -27,10 +26,10 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
         return (
           <div>
             {awards?.map(item => (
-            <div className="accordion-gaps">
+              <div className="accordion-gaps">
               <Accordion className="testBlack white-text">
                 <AccordionSummary className="testBlack white-text"
-                  expandIcon={<ExpandMoreIcon style={{color:"white"}} />}
+                  
                   aria-controls="panel1a-content"
                   id="panel1a-header"
                 >

@@ -16,7 +16,7 @@ function Home() {
 
         }).then(res => res.json())
                 .then(data => {
-                    console.log(data)
+                    //console.log(data)
                     setPopular(data);
                 }).catch(err => {
                     console.log(err)
@@ -35,7 +35,7 @@ function Home() {
               })
   },[])
         
-    console.log(popular);
+    //console.log(popular);
     const rate = (a, b) => {
         if (b === 0) {
             return 0;

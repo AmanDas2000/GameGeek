@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import Review from './Review.js'
 import { Link, useHistory } from "react-router-dom";
 import M from "materialize-css";
 import Button from "@material-ui/core/Button";
@@ -16,7 +15,7 @@ import Typography from "@material-ui/core/Typography";
 import Slider from "@material-ui/core/Slider";
 import Input from "@material-ui/core/Input";
 
-function CardHome({
+function Card({
   id,
   photo,
   name,
@@ -30,6 +29,7 @@ function CardHome({
 }) {
   const [value, setValue] = React.useState(0);
   const [rating, setRating] = useState(0);
+
   var date = new Date(releaseDate);
   var formattedDate = date.getDate()+"/"+(date.getMonth()+1)+"/"+date.getFullYear();
 
@@ -50,11 +50,10 @@ function CardHome({
   };
   const history = useHistory();
 
-  const [title, setTitle] = useState(null);
-  const [review, setReview] = useState(null);
+  const [title, setTitle] = useState("");
+  const [review, setReview] = useState("");
   const [open, setOpen] = React.useState(false);
   const handleClickOpen = () => {
-    findReview();
     setOpen(true);
   };
 
@@ -97,7 +96,7 @@ function CardHome({
           M.toast({ html: data.message, classes: "#43a047 green darken-1" });
           //history.push("/");
           window.parent.location.reload();
-          history.push("/");
+
         }
       })
       .catch((err) => {
@@ -125,7 +124,8 @@ function CardHome({
           M.toast({ html: data.error, classes: "#e57373 red" });
         } else {
           M.toast({ html: data.message, classes: "#43a047 green darken-1" });
-          history.push("/");
+          //history.push("/");
+          window.parent.location.reload();
         }
       })
       .catch((err) => {
@@ -133,7 +133,8 @@ function CardHome({
       });
   };
 
-  const addOnGoing= () => {
+  const deleteCompleted = () => {
+    console.log({ rating });
     fetch("/updatelist", {
       method: "post",
       headers: {
@@ -142,8 +143,8 @@ function CardHome({
       },
       body: JSON.stringify({
         gameId : id,
-        listType : "Curr",
-        deleteGame : false
+        listType : "Completed",
+        deleteGame : true
       }),
     })
       .then((res) => res.json())
@@ -153,38 +154,18 @@ function CardHome({
           M.toast({ html: data.error, classes: "#e57373 red" });
         } else {
           M.toast({ html: data.message, classes: "#43a047 green darken-1" });
-          history.push("/");
+          //history.push("/");
+          window.parent.location.reload();
         }
       })
       .catch((err) => {
         console.log(err);
       });
   };
-
-  const[reviewDisplay,setReviewDisplay]=useState([])
-  const findReview=()=>{
-    fetch("/findReview", {
-    method: "post",
-        headers: {
-    "Content-Type": "application/json"
-    },
-    body: JSON.stringify({
-      gameId : id,
-    }),
-    
-    }).then(res => res.json())
-    .then(data => {
-    console.log(data.rated)
-    setReviewDisplay(data.rated);
-    }).catch(err => {
-    console.log(err)
-    })
-    }
-
   return (
     <div className="row ">
-      <div className="col s30 m30">
-        <div className="card horizontalCard sticky-action #212121 grey darken-4">
+      <div className="col s40 m40">
+        <div className="card sticky-action #212121 grey darken-4">
           {/* <div className="product__rating">
                 {Array(rating)
 	         	.fill()
@@ -248,7 +229,7 @@ function CardHome({
                       margin: "20px 20px",
                     }}
                   >
-                    <p>Genre : {genre?.join(", ")}</p>
+                    <p>Genre : {genre.join(", ")}</p>
                     <p>Platform : {platform?.join(", ")}</p>
                     <p>Released: {formattedDate}</p>
                     <p>From : {company?.join(", ")}</p>
@@ -261,33 +242,12 @@ function CardHome({
                   }}
                 >
                   {description}
-                  <p>Top Reviews:</p>
-                  
-                  {reviewDisplay.length?<div  className="reviewDisplay">
-                  {reviewDisplay?.map(item => (
-                    <div className="reviewDisplay_single">
-                      <Review
-                        title={item.review.title}
-                        rating={item.rating}
-                        description={item.review.description}
-                        firstName={item.postedBy.name.firstName}
-                      />
-                  </div>
-                  ))}
-                  </div>:<p>No reviews</p>}
                 </DialogContentText>
-                
+            
               </DialogContent>
               <DialogActions className="testBlack white-text">
                 <div class="switch"></div>
-                <button
-                  className="waves-effect waves-light btn #4a148c purple darken-4"
-                  onClick={() => {
-                    addOnGoing();
-                  }}
-                >
-                  Playing
-                </button>
+
                 <button
                   className="waves-effect waves-light btn #1976d2 blue darken-2"
                   onClick={() => {
@@ -303,6 +263,14 @@ function CardHome({
                   }}
                 >
                   write review
+                </button>
+                <button
+                  className="waves-effect waves-light btn #c62828 red darken-3"
+                  onClick={() => {
+                    deleteCompleted();
+                  }}
+                >
+                  Remove
                 </button>
                 <Dialog
                   disableAutoFocus="false"
@@ -337,8 +305,6 @@ function CardHome({
                       rows="5"
                       cols="60"
                       placeholder="lets talk about the game"
-                      value={review}
-                      onChange={(e) => setReview(e.target.value)}
                       //onChange={(e) => setRating(e.target.value)}
                     />
                     <div
@@ -368,7 +334,6 @@ function CardHome({
                             aria-labelledby="input-slider"
                           />
                         </Grid>
-                        
                       </Grid>
                     </div>
                   </DialogContent>
@@ -395,5 +360,4 @@ function CardHome({
   );
 }
 
-export default CardHome;
-
+export default Card;

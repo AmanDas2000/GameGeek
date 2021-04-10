@@ -48,14 +48,17 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function Awards() {
+export default function ListTab() {
   const classes = useStyles();
   const [value, setValue] = React.useState(0);
+  const [allAwards,setAllAwards] = React.useState([]);
   const [PCAwards, setPCAwards] = React.useState([]);
   const [PSAwards, setPSAwards] = React.useState([]);
   const [XboxAwards, setXboxAwards] = React.useState([]);
   const [NintendoAwards, setNintendoAwards] = React.useState([]);
   
+
+  const categories = ["Shooter","RPG","Racing","Multiplayer","Platformer","Strategy"];
 
   useEffect(()=>{
       fetch("/findAwardsByPlatform", {
@@ -66,7 +69,7 @@ function Awards() {
           body: JSON.stringify({"platform":"PC"})
       }).then(res => res.json())
               .then(data => {
-                  console.log(data);
+                  //console.log(data);
                   setPCAwards(data.awards);
               }).catch(err => {
                   console.log(err);
@@ -82,7 +85,7 @@ function Awards() {
         body: JSON.stringify({"platform":"PS"})
     }).then(res => res.json())
             .then(data => {
-                console.log(data);
+                //console.log(data);
                 setPSAwards(data.awards);
             }).catch(err => {
                 console.log(err);
@@ -97,7 +100,7 @@ useEffect(()=>{
       body: JSON.stringify({"platform":"Xbox"})
   }).then(res => res.json())
           .then(data => {
-              console.log(data);
+              //console.log(data);
               setXboxAwards(data.awards);
           }).catch(err => {
               console.log(err);
@@ -112,7 +115,7 @@ useEffect(()=>{
       body: JSON.stringify({"platform":"Nintendo"})
   }).then(res => res.json())
           .then(data => {
-              console.log(data);
+              //console.log(data);
               setNintendoAwards(data.awards);
           }).catch(err => {
               console.log(err);
@@ -127,8 +130,8 @@ useEffect(()=>{
     
 
   return (
-    <div className="accordion">
-      <AppBar position="static">
+    <div>
+      <AppBar position="static" className="accordion">
         <Tabs centered
         className = "testBlack" 
         value={value} 
@@ -141,27 +144,33 @@ useEffect(()=>{
         </Tabs>
       </AppBar>
         <TabPanel value={value} index={0}>
-          <AwardsAccordion
-            awards={PCAwards}
-          />
+          <div className="accordion">
+            <AwardsAccordion
+              awards={PCAwards}
+            />
+          </div>
         </TabPanel>
         <TabPanel value={value} index={1}>
-          <AwardsAccordion 
-            awards={PSAwards}
-          />
+          <div className="accordion">
+              <AwardsAccordion
+                awards={PCAwards}
+              />
+          </div>
         </TabPanel>
         <TabPanel value={value} index={2}>
-          <AwardsAccordion 
-            awards={XboxAwards}
-          />
+          <div className="accordion">
+            <AwardsAccordion
+              awards={PCAwards}
+            />
+          </div>
         </TabPanel>
         <TabPanel value={value} index={3}>
-          <AwardsAccordion 
-            awards={NintendoAwards}
-          />
+          <div className="accordion">
+            <AwardsAccordion
+              awards={PCAwards}
+            />
+          </div>
         </TabPanel>
     </div>
   );
 }
-
-export default Awards;

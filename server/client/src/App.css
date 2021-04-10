@@ -5,7 +5,7 @@
 a{
   font-family: 'DotGothic16', sans-serif;
   color: white !important;
-  text-shadow: 1px 1px 15px var(--color);
+  text-shadow: 0px 0px 1px var(--color);
 }
 .link{
   font-family: 'Roboto Condensed', sans-serif;
@@ -107,6 +107,10 @@ background: radial-gradient(circle, rgba(55,55,56,1) 0%, rgba(0,0,0,1) 100%);
 } */
 .accordion-gaps {
   margin: 15px auto!important;
+  border-left:1px solid grey;
+  border-right:1px solid var(--color);
+  border-bottom:1px solid var(--color);
+  border-top: 1px solid grey;
 }
 
 h4{

@@ -13,7 +13,7 @@ function HallOfFame() {
             body: JSON.stringify({"platform":"HallOfFame"})
         }).then(res => res.json())
                 .then(data => {
-                    console.log(data);
+                    //console.log(data);
                     setHallOfFameAwards(data.awards);
                 }).catch(err => {
                     console.log(err);

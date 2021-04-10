@@ -1,6 +1,5 @@
 import React ,{ useState,useEffect,useContext  } from 'react'
 import Card from './Card.js'
-import CardDelFav from './CardDelFav'
 import CardFav from './CardFav'
 import CardCurr from './CardCurr'
 import CardCompleted from './CardCompleted'
@@ -165,15 +164,17 @@ function MyList() {
                 </div>
                 <div class="white-text">
                     
-                    <h4>{ state?.firstName} {state?.ign} { state?.lastName}</h4>
+                    <h4>{ state?.firstName} '{state?.ign}' { state?.lastName}</h4>
                     
                     <div style={{
                         display: "flex",
                         justifyContent: "space-between",
                         width: "110%",
                     }}>
-                        <h5>5 year coin</h5>
-                        <h5>{games.length} Ratings</h5> 
+                        <h5>{fav.length} Favourites</h5>
+                        <h5>{Curr.length} Playing</h5>
+                        <h5>{Completed.length} Completed</h5> 
+                        <h5>{games.length} Ratings</h5>
                     </div>
                 </div>
             </div>
@@ -192,7 +193,7 @@ function MyList() {
         aria-label="simple tabs example"
         >
           <Tab label="Favourites" {...a11yProps(0)} />
-          <Tab label="On going" {...a11yProps(1)} />
+          <Tab label="Playing" {...a11yProps(1)} />
           <Tab label="Completed" {...a11yProps(2)} />
           <Tab label="User Rated" {...a11yProps(3)} />
         </Tabs>

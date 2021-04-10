@@ -15,7 +15,7 @@ import Typography from "@material-ui/core/Typography";
 import Slider from "@material-ui/core/Slider";
 import Input from "@material-ui/core/Input";
 
-function CardDelFav({
+function CardCurr({
   id,
   photo,
   name,
@@ -24,12 +24,14 @@ function CardDelFav({
   company,
   platform,
   number,
-  date,
+  releaseDate,
   description,
 }) {
   const [value, setValue] = React.useState(0);
   const [rating, setRating] = useState(0);
 
+  var date = new Date(releaseDate);
+  var formattedDate = date.getDate()+"/"+(date.getMonth()+1)+"/"+date.getFullYear();
   const handleSliderChange = (event, newRating) => {
     setRating(newRating);
   };
@@ -66,7 +68,7 @@ function CardDelFav({
     setOpenReview(false);
   };
 
-  const deleteFav = () => {
+  const deleteCurr = () => {
     console.log({ rating });
     fetch("/updatelist", {
       method: "post",
@@ -76,7 +78,7 @@ function CardDelFav({
       },
       body: JSON.stringify({
         gameId : id,
-        listType : "Fav",
+        listType : "Curr",
         deleteGame : true
       }),
     })
@@ -87,10 +89,41 @@ function CardDelFav({
           M.toast({ html: data.error, classes: "#e57373 red" });
         } else {
           M.toast({ html: data.message, classes: "#43a047 green darken-1" });
-            history.push("/MyList");
-            window.parent.location.reload();
+          //history.push("/");
+          window.parent.location.reload();
         }
       })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+  
+  const addCompleted = () => {
+    console.log({ rating });
+    fetch("/updatelist", {
+      method: "post",
+      headers: {
+        Authorization: "Bearer " + localStorage.getItem("jwt"),
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        gameId : id,
+        listType : "Completed",
+        deleteGame : false
+      }),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        console.log(data);
+        if (data.error) {
+          M.toast({ html: data.error, classes: "#e57373 red" });
+        } else {
+          M.toast({ html: data.message, classes: "#43a047 green darken-1" });
+          //history.push("/");
+          window.parent.location.reload();
+        }
+      })
+      .then(()=>{deleteCurr()})
       .catch((err) => {
         console.log(err);
       });
@@ -163,9 +196,9 @@ function CardDelFav({
                       margin: "20px 20px",
                     }}
                   >
-                    <p>Genre : {genre}</p>
+                    <p>Genre : {genre.join(", ")}</p>
                     <p>Platform : {platform?.join(", ")}</p>
-                    <p>Realesed: date</p>
+                    <p>Released: {formattedDate}</p>
                     <p>From : {company?.join(", ")}</p>
                   </div>
                 </div>
@@ -182,10 +215,16 @@ function CardDelFav({
               <DialogActions className="testBlack white-text ">
                 <div class="switch"></div>
                 <button
-                  className="waves-effect waves-light btn #c62828 red darken-3"
-                  onClick={()=>{deleteFav()}}
+                  className="waves-effect waves-light btn #c62828 red darken-3 "
+                  onClick={()=>{addCompleted()}}
                 >
-                  Remove from favourites
+                  Completed
+                </button>
+                <button
+                  className="waves-effect waves-light btn #c62828 red darken-3 "
+                  onClick={()=>{deleteCurr()}}
+                >
+                  Remove
                 </button>
                
               </DialogActions>
@@ -197,4 +236,4 @@ function CardDelFav({
   );
 }
 
-export default CardDelFav;
+export default CardCurr;

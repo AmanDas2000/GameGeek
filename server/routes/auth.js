@@ -5,7 +5,7 @@ const User = mongoose.model("User");
 const Admin = mongoose.model("Admin");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
-const { JWT_SECRET } = require("../keys");
+const { JWT_SECRET } = require("../client/config/keys");
 const requireLogin = require("../middleware/requireLogin");
 const requireAdmin = require("../middleware/requireAdmin");
 
@@ -45,7 +45,7 @@ router.post("/adminSignup", (req, res) => {
 });
 //user signup
 router.post("/signup", (req, res) => {
-  const { firstName,lastName,dateOfBirth,photo, email, password } = req.body;
+  const { firstName,lastName,dateOfBirth,photo, email, password, ign } = req.body;
   if (!email || !password || !firstName) {
     return res.status(422).json({ error: "please add all the fields" });
   }
@@ -58,7 +58,7 @@ router.post("/signup", (req, res) => {
       }
       bcrypt.hash(password, 12).then((hashedpassword) => {
         const user = new User({
-          email,dateOfBirth,photo,
+          email,dateOfBirth,photo,ign,
           password: hashedpassword,
           name : {firstName,lastName}
         });

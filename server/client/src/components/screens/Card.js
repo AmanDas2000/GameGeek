@@ -97,7 +97,7 @@ function Card({
           M.toast({ html: data.message, classes: "#43a047 green darken-1" });
           //history.push("/");
           window.parent.location.reload();
-          history.push("/");
+
         }
       })
       .catch((err) => {
@@ -125,7 +125,8 @@ function Card({
           M.toast({ html: data.error, classes: "#e57373 red" });
         } else {
           M.toast({ html: data.message, classes: "#43a047 green darken-1" });
-          history.push("/");
+          //history.push("/");
+          window.parent.location.reload();
         }
       })
       .catch((err) => {
@@ -153,7 +154,8 @@ function Card({
           M.toast({ html: data.error, classes: "#e57373 red" });
         } else {
           M.toast({ html: data.message, classes: "#43a047 green darken-1" });
-          history.push("/");
+          //history.push("/");
+          window.parent.location.reload();
         }
       })
       .catch((err) => {

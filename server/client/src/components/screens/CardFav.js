@@ -15,7 +15,7 @@ import Typography from "@material-ui/core/Typography";
 import Slider from "@material-ui/core/Slider";
 import Input from "@material-ui/core/Input";
 
-function CardCurr({
+function CardFav({
   id,
   photo,
   name,
@@ -29,7 +29,6 @@ function CardCurr({
 }) {
   const [value, setValue] = React.useState(0);
   const [rating, setRating] = useState(0);
-
   var date = new Date(releaseDate);
   var formattedDate = date.getDate()+"/"+(date.getMonth()+1)+"/"+date.getFullYear();
   const handleSliderChange = (event, newRating) => {
@@ -68,7 +67,7 @@ function CardCurr({
     setOpenReview(false);
   };
 
-  const deleteCurr = () => {
+  const deleteFav = () => {
     console.log({ rating });
     fetch("/updatelist", {
       method: "post",
@@ -78,7 +77,7 @@ function CardCurr({
       },
       body: JSON.stringify({
         gameId : id,
-        listType : "Curr",
+        listType : "Fav",
         deleteGame : true
       }),
     })
@@ -89,7 +88,8 @@ function CardCurr({
           M.toast({ html: data.error, classes: "#e57373 red" });
         } else {
           M.toast({ html: data.message, classes: "#43a047 green darken-1" });
-          history.push("/");
+          //history.push("/");
+          window.parent.location.reload();
         }
       })
       .catch((err) => {
@@ -97,35 +97,6 @@ function CardCurr({
       });
   };
   
-  const addCompleted = () => {
-    console.log({ rating });
-    fetch("/updatelist", {
-      method: "post",
-      headers: {
-        Authorization: "Bearer " + localStorage.getItem("jwt"),
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        gameId : id,
-        listType : "Completed",
-        deleteGame : false
-      }),
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        console.log(data);
-        if (data.error) {
-          M.toast({ html: data.error, classes: "#e57373 red" });
-        } else {
-          M.toast({ html: data.message, classes: "#43a047 green darken-1" });
-          history.push("/");
-        }
-      })
-      .then(()=>{deleteCurr()})
-      .catch((err) => {
-        console.log(err);
-      });
-  };
 
   return (
     <div className="row ">
@@ -214,13 +185,7 @@ function CardCurr({
                 <div class="switch"></div>
                 <button
                   className="waves-effect waves-light btn #c62828 red darken-3 "
-                  onClick={()=>{addCompleted()}}
-                >
-                  Completed
-                </button>
-                <button
-                  className="waves-effect waves-light btn #c62828 red darken-3 "
-                  onClick={()=>{deleteCurr()}}
+                  onClick={()=>{deleteFav()}}
                 >
                   Remove
                 </button>
@@ -234,4 +199,4 @@ function CardCurr({
   );
 }
 
-export default CardCurr;
+export default CardFav;

@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import Review from './Review.js'
 import { Link, useHistory } from "react-router-dom";
 import M from "materialize-css";
 import Button from "@material-ui/core/Button";
@@ -15,7 +16,7 @@ import Typography from "@material-ui/core/Typography";
 import Slider from "@material-ui/core/Slider";
 import Input from "@material-ui/core/Input";
 
-function Card({
+function CardHome({
   id,
   photo,
   name,
@@ -29,7 +30,6 @@ function Card({
 }) {
   const [value, setValue] = React.useState(0);
   const [rating, setRating] = useState(0);
-
   var date = new Date(releaseDate);
   var formattedDate = date.getDate()+"/"+(date.getMonth()+1)+"/"+date.getFullYear();
 
@@ -50,9 +50,11 @@ function Card({
   };
   const history = useHistory();
 
-  const [title, setTitle] = useState("");
+  const [title, setTitle] = useState(null);
+  const [review, setReview] = useState(null);
   const [open, setOpen] = React.useState(false);
   const handleClickOpen = () => {
+    findReview();
     setOpen(true);
   };
 
@@ -79,6 +81,10 @@ function Card({
       },
       body: JSON.stringify({
         id,
+        review: {
+          title: title,
+          description: review,
+        },
         rating: parseInt(rating),
       }),
     })
@@ -89,7 +95,8 @@ function Card({
           M.toast({ html: data.error, classes: "#e57373 red" });
         } else {
           M.toast({ html: data.message, classes: "#43a047 green darken-1" });
-          history.push("/");
+          //history.push("/");
+          window.parent.location.reload();
         }
       })
       .catch((err) => {
@@ -117,7 +124,8 @@ function Card({
           M.toast({ html: data.error, classes: "#e57373 red" });
         } else {
           M.toast({ html: data.message, classes: "#43a047 green darken-1" });
-          history.push("/");
+          //history.push("/");
+          window.parent.location.reload();
         }
       })
       .catch((err) => {
@@ -125,8 +133,7 @@ function Card({
       });
   };
 
-  const deleteCompleted = () => {
-    console.log({ rating });
+  const addOnGoing= () => {
     fetch("/updatelist", {
       method: "post",
       headers: {
@@ -135,8 +142,8 @@ function Card({
       },
       body: JSON.stringify({
         gameId : id,
-        listType : "Completed",
-        deleteGame : true
+        listType : "Curr",
+        deleteGame : false
       }),
     })
       .then((res) => res.json())
@@ -146,17 +153,39 @@ function Card({
           M.toast({ html: data.error, classes: "#e57373 red" });
         } else {
           M.toast({ html: data.message, classes: "#43a047 green darken-1" });
-          history.push("/");
+          //history.push("/");
+          window.parent.location.reload();
         }
       })
       .catch((err) => {
         console.log(err);
       });
   };
+
+  const[reviewDisplay,setReviewDisplay]=useState([])
+  const findReview=()=>{
+    fetch("/findReview", {
+    method: "post",
+        headers: {
+    "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+      gameId : id,
+    }),
+    
+    }).then(res => res.json())
+    .then(data => {
+    console.log(data.rated)
+    setReviewDisplay(data.rated);
+    }).catch(err => {
+    console.log(err)
+    })
+    }
+
   return (
     <div className="row ">
-      <div className="col s40 m40">
-        <div className="card sticky-action #212121 grey darken-4">
+      <div className="col s30 m30">
+        <div className="card horizontalCard sticky-action #212121 grey darken-4">
           {/* <div className="product__rating">
                 {Array(rating)
 	         	.fill()
@@ -220,7 +249,7 @@ function Card({
                       margin: "20px 20px",
                     }}
                   >
-                    <p>Genre : {genre.join(", ")}</p>
+                    <p>Genre : {genre?.join(", ")}</p>
                     <p>Platform : {platform?.join(", ")}</p>
                     <p>Released: {formattedDate}</p>
                     <p>From : {company?.join(", ")}</p>
@@ -233,12 +262,33 @@ function Card({
                   }}
                 >
                   {description}
+                  <p>Top Reviews:</p>
+                  
+                  {reviewDisplay.length?<div  className="reviewDisplay">
+                  {reviewDisplay?.map(item => (
+                    <div className="reviewDisplay_single">
+                      <Review
+                        title={item.review.title}
+                        rating={item.rating}
+                        description={item.review.description}
+                        firstName={item.postedBy.name.firstName}
+                      />
+                  </div>
+                  ))}
+                  </div>:<p>No reviews</p>}
                 </DialogContentText>
-            
+                
               </DialogContent>
               <DialogActions className="testBlack white-text">
                 <div class="switch"></div>
-
+                <button
+                  className="waves-effect waves-light btn #4a148c purple darken-4"
+                  onClick={() => {
+                    addOnGoing();
+                  }}
+                >
+                  Playing
+                </button>
                 <button
                   className="waves-effect waves-light btn #1976d2 blue darken-2"
                   onClick={() => {
@@ -254,14 +304,6 @@ function Card({
                   }}
                 >
                   write review
-                </button>
-                <button
-                  className="waves-effect waves-light btn #c62828 red darken-3"
-                  onClick={() => {
-                    deleteCompleted();
-                  }}
-                >
-                  Remove
                 </button>
                 <Dialog
                   disableAutoFocus="false"
@@ -296,6 +338,8 @@ function Card({
                       rows="5"
                       cols="60"
                       placeholder="lets talk about the game"
+                      value={review}
+                      onChange={(e) => setReview(e.target.value)}
                       //onChange={(e) => setRating(e.target.value)}
                     />
                     <div
@@ -317,7 +361,7 @@ function Card({
                           <Slider
                             style={{ color: "green" }}
                             min={0}
-                            step={0.1}
+                            step={1}
                             max={10}
                             value={typeof rating === "number" ? rating : 0}
                             onChange={handleSliderChange}
@@ -325,6 +369,7 @@ function Card({
                             aria-labelledby="input-slider"
                           />
                         </Grid>
+                        
                       </Grid>
                     </div>
                   </DialogContent>
@@ -351,4 +396,5 @@ function Card({
   );
 }
 
-export default Card;
+export default CardHome;
+
