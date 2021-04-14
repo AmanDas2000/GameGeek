@@ -6,6 +6,12 @@ E - Express.js
 R - Reactjs
 N - Node.js
 
+You can either sign-up or use this:
+
+email: "demo@gmail.com"
+password: "demo@123"
+
+
 Key Features :
 
 1. User Authentication (Registration and login) with JWT (Json Web Token).
