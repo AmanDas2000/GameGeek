@@ -10,7 +10,7 @@ function AllGames() {
     const [open, setOpen] = React.useState("");
     
     useEffect(()=>{
-        fetch("/allgames", {
+        fetch("/findallgames", {
             method: "get",
 
         }).then(res => res.json())

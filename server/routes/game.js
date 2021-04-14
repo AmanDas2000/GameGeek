@@ -7,7 +7,7 @@ const {
 } = require('./rate');
 const Game = mongoose.model("Game");
 
-router.get('/allgames', (req, res) => {
+router.get('/findallgames', (req, res) => {
     Game.find()
         .populate("addedBy", "_id name")
         .then(games => {
