@@ -1,4 +1,4 @@
-# GameProject
+# GameGeek
 A user based game review and tracking web application developed using MERN stack.
 
 M - MongoDB
