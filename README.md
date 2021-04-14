@@ -6,7 +6,7 @@ E - Express.js
 R - Reactjs
 N - Node.js
 
-You can either sign-up or use this:
+You can either sign-up or use this to try it out:
 
 email: "demo@gmail.com"
 password: "demo@123"
